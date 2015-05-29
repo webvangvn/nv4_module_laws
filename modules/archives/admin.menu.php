@@ -19,6 +19,3 @@ $submenu['organ'] = $lang_module['organ'];
 $submenu['room'] = $lang_module['room'];
 
 $allow_func = array( 'main', 'config', 'alias', 'cat', 'cat_action', 'content', 'field', 'field_action', 'organ', 'organ_action', 'room', 'room_action');
-
-
-?>
