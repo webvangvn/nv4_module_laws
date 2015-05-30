@@ -11,6 +11,7 @@
 
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
+$page_title = $lang_module['config'];
 $data = $module_config[$module_name];
 $groups_list = nv_groups_list();
 $savesetting = $nv_Request->get_int( 'savesetting', 'post', 0 );
