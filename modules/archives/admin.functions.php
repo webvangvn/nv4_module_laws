@@ -67,7 +67,7 @@ function nv_fix_cat_order ( $parentid = 0, $order = 0, $lev = 0 )
     {
         $array_cat_order[] = $row['catid'];
     }
-    $db->sql_freeresult();
+    $db->sqlreset();
     $weight = 0;
     if ( $parentid > 0 )
     {
@@ -108,7 +108,7 @@ function nv_fix_cat_row ( $catid = 0 )
     global $db, $db_config, $module_name, $module_data;
     $query = "SELECT count(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE catid=" . $catid . " AND status=1";
     $result = $db->query( $query );
-    list( $num ) = $result->fetch();
+    $num  = $result->fetch();
     $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET numrow=" . $num . " WHERE catid=" . intval( $catid );
     $db->query( $sql );
 
