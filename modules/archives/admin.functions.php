@@ -11,7 +11,8 @@
 
 if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_MODADMIN' ) ) die( 'Stop!!!' );
 define( 'NV_IS_FILE_ADMIN', true );
-
+nv_del_moduleCache( 'settings' );
+nv_del_moduleCache( $module_name );
 
 global $global_array_cat;
 $global_array_cat = array();
