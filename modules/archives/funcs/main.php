@@ -51,7 +51,37 @@ if ( $data_config['view_type'] == "view_listall")
 }
 elseif ( $data_config['view_type'] == "view_listcate") 
 {
+
+
 	$data_content = array();
+	foreach ( $global_archives_cat as $catid_i => $catinfo_i)	
+	{
+		if ( $catinfo_i['parentid'] == 0 and $catinfo_i['inhome'] == '1' )
+        {
+			$db->sqlreset()
+				->select( 'COUNT(*)' )
+				->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
+				->where( 'catid='.$catid_i.' AND status= 1' );
+			$num_items = $db->query( $db->sql() )->fetchColumn();
+			$db->select( '*' )
+					->order( $order_by )
+					->limit( $catinfo_i['numlinks'] )
+					->offset( ( $page - 1 ) * $per_page );
+			$result = $db->query( $db->sql() );
+            $all_page = ( $num_items ) ? $num_items : 1;
+            $data_content_temp = array();
+            $i = $page + 1;
+            while ( $row = $result->fetch() )
+            {
+                $row['no'] = $i;
+                $data_content_temp[] = $row;
+                $i ++;
+            }
+            $data_content[] = array( 
+                "catinfo" => $catinfo_i, "data" => $data_content_temp 
+            );
+        }
+    }
     $contents = call_user_func( $data_config['view_type'], $data_content, "" );
 }
 else $contents = "";
