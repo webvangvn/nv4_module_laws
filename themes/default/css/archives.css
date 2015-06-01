@@ -2,6 +2,107 @@
  * @Project NUKEVIET 4.x
  * @Author PCD-GROUP (contact@dinhpc.com)
  * @Copyright (C) 2015 PCD-GROUP. All rights reserved
+ * @Update to 4.x webvang (hoang.nguyen@webvang.vn)
  * @License GNU/GPL version 2 or any later version
  * @Createdate Fri, 29 May 2015 07:49:53 GMT
  */
+ 
+ /* CSS Document */
+
+table.archives_list {
+    background: #FFF;
+    border-collapse:collapse;
+    width: 100%;
+	empty-cells: show;
+	border-right: 1px solid #c9d7de;
+	border-top: 1px solid #c9d7de;
+	margin-top:2px;
+}
+
+table.archives_list tbody {
+    
+}
+
+table.archives_list tbody.second {
+    background:#F8F8F8
+}
+
+table.archives_list td{
+    border-left: 1px solid #c9d7de;
+	border-bottom: 1px solid #c9d7de;
+	padding:5px;
+}
+
+table.archives_list tfoot{
+    background: #CCC;
+}
+
+table.archives_list thead {
+    background: #e9f2fa;
+	font-weight:bold;
+}
+.maincat {
+	background:#F7FBFB;
+}
+.archives_down {
+	padding:2px 0px;
+	padding-left:20px;
+	display:inline-block;
+	margin-left:5px;
+}
+.archives_links {
+	margin-bottom:2px;
+	border: 1px solid #c9d7de;
+	background: #e9f2fa;	
+	padding:5px;
+}
+.archives_links a{
+	font-weight:bold;
+}
+.search_archives { 
+	background: #e9f2fa;
+	border: 1px solid #c9d7de;
+	margin-bottom:2px;
+	padding:2px;
+}
+
+/*menu*/
+.applemenu{
+	padding: 0;
+	border: 1px solid #c9d7de;
+	border-top:0;
+	margin-bottom:2px;
+}
+.applemenu div.silverheader a{
+	background:#e9f2fa;
+	color:#000;
+	display: block;
+	position: relative; /*To help in the anchoring of the ".statusicon" icon image*/
+	width: auto;
+	padding: 5px 0;
+	padding-left: 8px;
+	text-decoration: none;
+	border-top:#c9d7de 1px solid;
+	font-weight:bold;
+}
+.applemenu div.silverheader a:visited, .applemenu div.silverheader a:active{
+	color:#900;
+}
+.applemenu div.selected a, .applemenu div.silverheader a:hover{
+	background:#E1F0F0;
+	color:#900;
+}
+.applemenu div.submenu{ /*DIV that contains each sub menu*/
+	background: white;
+	padding: 5px;
+}
+.applemenu div.submenu a{
+	display:block;
+}
+.applemenu div.submenu a span{
+	padding:6px;
+	display:block;
+	background:#F8F8F8;
+	border:1px solid #FFF
+}
+.frame { text-align:center }
