@@ -6,7 +6,7 @@
  * @Createdate July 27, 2011  11:24:58 AM 
  */
 
-if ( ! defined( 'NV_IS_MOD_ARCHIES' ) ) die( 'Stop!!!' );
+if( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 if ( ! function_exists( 'nv_block_archives_search' ) )
 {
