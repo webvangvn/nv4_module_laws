@@ -109,7 +109,7 @@ function nv_fix_cat_row ( $catid = 0 )
     $query = "SELECT count(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE catid=" . $catid . " AND status=1";
     $result = $db->query( $query );
     $num  = $result->fetch();
-    $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET numrow=" . $num . " WHERE catid=" . intval( $catid );
+    $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET numrow='" . $num . "' WHERE catid=" . intval( $catid );
     $db->query( $sql );
 
 }
@@ -124,14 +124,14 @@ function nv_fix_catall_row ( )
 function nv_fix_room_order ( $parentid = 0, $order = 0, $lev = 0 )
 {
     global $db, $db_config, $lang_module, $lang_global, $module_name, $module_data, $op;
-    $query = "SELECT roomid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_room WHERE parentid=" . $parentid . " ORDER BY weight ASC";
+    $query = "SELECT roomid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_room WHERE parentid='" . $parentid . "' ORDER BY weight ASC";
     $result = $db->query( $query );
     $array_room_order = array();
     while ( $row = $result->fetch() )
     {
         $array_room_order[] = $row['roomid'];
     }
-    $db->sql_freeresult();
+    $db->sqlreset();
     $weight = 0;
     if ( $parentid > 0 )
     {
@@ -145,14 +145,14 @@ function nv_fix_room_order ( $parentid = 0, $order = 0, $lev = 0 )
     {
         $order ++;
         $weight ++;
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_room SET weight=" . $weight . ", orders=" . $order . ", lev='" . $lev . "' WHERE roomid=" . intval( $roomid_i );
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_room SET weight='" . $weight . "', orders='" . $order . "', lev='" . $lev . "' WHERE roomid='" . intval( $roomid_i )."'";
         $db->query( $sql );
         $order = nv_fix_room_order( $roomid_i, $order, $lev );
     }
     $numsubroom = $weight;
     if ( $parentid > 0 )
     {
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_room SET numsubroom=" . $numsubroom;
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_room SET numsubroom='" . $numsubroom."'";
         if ( $numsubroom == 0 )
         {
             $sql .= ",subroomid=''";
@@ -161,7 +161,7 @@ function nv_fix_room_order ( $parentid = 0, $order = 0, $lev = 0 )
         {
             $sql .= ",subroomid='" . implode( ",", $array_room_order ) . "'";
         }
-        $sql .= " WHERE roomid=" . intval( $parentid );
+        $sql .= " WHERE roomid='" . intval( $parentid )."'";
         $db->query( $sql );
     }
     return $order;
@@ -170,14 +170,14 @@ function nv_fix_room_order ( $parentid = 0, $order = 0, $lev = 0 )
 function nv_fix_field_order ( $parentid = 0, $order = 0, $lev = 0 )
 {
     global $db, $db_config, $lang_module, $lang_global, $module_name, $module_data, $op;
-    $query = "SELECT fieldid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_field WHERE parentid=" . $parentid . " ORDER BY weight ASC";
+    $query = "SELECT fieldid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_field WHERE parentid='" . $parentid . "' ORDER BY weight ASC";
     $result = $db->query( $query );
     $array_field_order = array();
     while ( $row = $result->fetch() )
     {
         $array_field_order[] = $row['fieldid'];
     }
-    $db->sql_freeresult();
+    $db->sqlreset();
     $weight = 0;
     if ( $parentid > 0 )
     {
@@ -191,14 +191,14 @@ function nv_fix_field_order ( $parentid = 0, $order = 0, $lev = 0 )
     {
         $order ++;
         $weight ++;
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_field SET weight=" . $weight . ", orders=" . $order . ", lev='" . $lev . "' WHERE fieldid=" . intval( $fieldid_i );
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_field SET weight='" . $weight . "', orders='" . $order . "', lev='" . $lev . "' WHERE fieldid='" . intval( $fieldid_i )."'";
         $db->query( $sql );
         $order = nv_fix_field_order( $fieldid_i, $order, $lev );
     }
     $numsubfield = $weight;
     if ( $parentid > 0 )
     {
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_field SET numsubfield=" . $numsubfield;
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_field SET numsubfield='" . $numsubfield."'";
         if ( $numsubfield == 0 )
         {
             $sql .= ",subfieldid=''";
@@ -207,7 +207,7 @@ function nv_fix_field_order ( $parentid = 0, $order = 0, $lev = 0 )
         {
             $sql .= ",subfieldid='" . implode( ",", $array_field_order ) . "'";
         }
-        $sql .= " WHERE fieldid=" . intval( $parentid );
+        $sql .= " WHERE fieldid='" . intval( $parentid )."'";
         $db->query( $sql );
     }
     return $order;
@@ -215,14 +215,14 @@ function nv_fix_field_order ( $parentid = 0, $order = 0, $lev = 0 )
 function nv_fix_organ_order ( $parentid = 0, $order = 0, $lev = 0 )
 {
     global $db, $db_config, $lang_module, $lang_global, $module_name, $module_data, $op;
-    $query = "SELECT organid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_organ WHERE parentid=" . $parentid . " ORDER BY weight ASC";
+    $query = "SELECT organid, parentid FROM " . NV_PREFIXLANG . "_" . $module_data . "_organ WHERE parentid='" . $parentid . "' ORDER BY weight ASC";
     $result = $db->query( $query );
     $array_organ_order = array();
     while ( $row = $result->fetch() )
     {
         $array_organ_order[] = $row['organid'];
     }
-    $db->sql_freeresult();
+    $db->sqlreset();
     $weight = 0;
     if ( $parentid > 0 )
     {
@@ -236,14 +236,14 @@ function nv_fix_organ_order ( $parentid = 0, $order = 0, $lev = 0 )
     {
         $order ++;
         $weight ++;
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_organ SET weight=" . $weight . ", orders=" . $order . ", lev='" . $lev . "' WHERE organid=" . intval( $organid_i );
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_organ SET weight='" . $weight . "', orders='" . $order . "', lev='" . $lev . "' WHERE organid='" . intval( $organid_i )."'";
         $db->query( $sql );
         $order = nv_fix_organ_order( $organid_i, $order, $lev );
     }
     $numsuborgan = $weight;
     if ( $parentid > 0 )
     {
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_organ SET numsuborgan=" . $numsuborgan;
+        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_organ SET numsuborgan='" . $numsuborgan."'";
         if ( $numsuborgan == 0 )
         {
             $sql .= ",suborganid=''";
@@ -252,7 +252,7 @@ function nv_fix_organ_order ( $parentid = 0, $order = 0, $lev = 0 )
         {
             $sql .= ",suborganid='" . implode( ",", $array_organ_order ) . "'";
         }
-        $sql .= " WHERE organid=" . intval( $parentid );
+        $sql .= " WHERE organid='" . intval( $parentid )."'";
         $db->query( $sql );
     }
     return $order;

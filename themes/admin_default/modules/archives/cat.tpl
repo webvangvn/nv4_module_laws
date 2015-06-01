@@ -1,4 +1,5 @@
 <!-- BEGIN: main -->
+<div class="table-responsive">
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
 	<thead>
@@ -31,6 +32,7 @@
     <!-- END: loop -->
 </table>
 <!-- END: list --> 
+</div>
 <!-- BEGIN: form -->
 <div id="edit">
 	<!-- BEGIN: error -->

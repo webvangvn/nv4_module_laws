@@ -88,24 +88,33 @@ if ( $savecat == '1' )
     	elseif($catid>0) 
     	{
     		//update data
-    		$query = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET parentid='" . $data['parentid'] . "', title='" . $data['title'] . "', alias =  '" . $data['alias'] . "', description='" . $data['description'] . "', keywords= '" . $data['keywords'] . "', who_view='" . $data['who_view'] . "', groups_view='" . $data['groups_view'] . "', edit_time=UNIX_TIMESTAMP( ) WHERE catid =" . $catid . "";
-        	$result=$db->query( $query );
-        	if ( $result->rowCount() > 0 )
+			$stmt = $db->prepare( 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_cat SET parentid= :parentid, title= :title, alias = :alias, description = :description, keywords= :keywords, who_view= :who_view, groups_view= :groups_view, edit_time=' . NV_CURRENTTIME . ' WHERE catid =' . $catid );
+			$stmt->bindParam( ':parentid', $data['parentid'], PDO::PARAM_INT );
+			$stmt->bindParam( ':title', $data['title'], PDO::PARAM_STR );
+			$stmt->bindParam( ':alias', $data['alias'], PDO::PARAM_STR );
+			$stmt->bindParam( ':keywords', $data['keywords'], PDO::PARAM_STR );
+			$stmt->bindParam( ':description', $data['description'], PDO::PARAM_STR, strlen( $data['description'] ) );
+			$stmt->bindParam( ':groups_view', $data['groups_view'], PDO::PARAM_STR );
+			$stmt->bindParam( ':who_view', $data['who_view'], PDO::PARAM_STR );
+			$stmt->execute();
+			$num=1;
+        	if ($num == 1)
 	        {
+				
 	        	if ( $data['parentid'] != $parentid_old )
 	        	{
 					$result= $db->query( "SELECT max(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid='" . $data['parentid'] . "'" );
 	        		 $weight  = $result->fetch();
 	                $weight = intval( $weight ) + 1;
 	                $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET weight='" . $weight . "' WHERE catid=" . intval( $catid );
-	                $db->query( $sql );
-					nv_del_moduleCache( $module_name );
+					$db->query( $sql );
 	                nv_fix_cat_order();
-	                nv_fix_cat_row ( $catid );
+					nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['edit_cat'], $data['title'], $admin_info['userid'] );
 	        	}
-				nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['edit_cat'], $data['title'], $admin_info['userid'] );
+				nv_del_moduleCache( $module_name );
+				
 	        	Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
-	            die($catid);
+	            die();
 	        }
 	        else
 	        {
