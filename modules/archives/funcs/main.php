@@ -58,6 +58,7 @@ elseif ( $data_config['view_type'] == "view_listcate")
 	{
 		if ( $catinfo_i['parentid'] == 0 and $catinfo_i['inhome'] == '1' )
         {
+			$order_by = 'id DESC';
 			$db->sqlreset()
 				->select( 'COUNT(*)' )
 				->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
