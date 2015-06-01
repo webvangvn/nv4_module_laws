@@ -38,7 +38,7 @@ if ( $data_config['view_type'] == "view_listall")
 	$result = $db->query( $db->sql() );
 	$all_page = ( $num_items ) ? $num_items : 1;
 	$data_content = array();
-	$i = $page+1;
+	$i = $page;
 	while( $row = $result->fetch() )
 	{
 		$row['no'] = $i;

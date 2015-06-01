@@ -30,7 +30,7 @@ ul.block_archives_news li span strong{
 	color:#F60
 }
 </style>
-<script src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/archives/jquery.marquee.js" type="text/javascript"></script>
+<script src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/laws/jquery.marquee.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function (){
   $("#marquee{id}").marquee({yScroll: "bottom"});
@@ -42,7 +42,7 @@ $(document).ready(function (){
     	<h3><font color="#FF3300">Văn bản:</font>{ROW.title}</h3>
         <p>
         	<a href="{ROW.linkview}">{ROW.hometext}</a>
-            <!-- BEGIN: img --><img src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/archives/new.gif" /><!-- END: img -->
+            <!-- BEGIN: img --><img src="{NV_BASE_SITEURL}themes/{TEMPLATE}/images/laws/new.gif" /><!-- END: img -->
         </p>
         <span>view : <strong>{ROW.view}</strong> | down : <strong>{ROW.down}</strong> </span>
     </li>

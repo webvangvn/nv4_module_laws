@@ -11,11 +11,10 @@
 
 if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_MODADMIN' ) ) die( 'Stop!!!' );
 
-$submenu['config'] = $lang_module['config'];
-$submenu['cat'] = $lang_module['cat'];
 $submenu['content'] = $lang_module['content'];
+$submenu['cat'] = $lang_module['cat'];
 $submenu['field'] = $lang_module['field'];
 $submenu['organ'] = $lang_module['organ'];
 $submenu['room'] = $lang_module['room'];
-
+$submenu['config'] = $lang_module['config'];
 $allow_func = array( 'main', 'config', 'alias', 'cat', 'cat_action', 'content', 'field', 'field_action', 'organ', 'organ_action', 'room', 'room_action');

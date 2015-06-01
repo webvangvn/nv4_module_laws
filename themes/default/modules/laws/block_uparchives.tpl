@@ -6,6 +6,6 @@
 }
 </style>
 <div class="archievs_up">
-	<a href="http://localhost/test/index.php?nv=archives&op=content/">Upload File Văn bản</a>
+	<a href="/index.php?nv=laws&op=content/">Upload File Văn bản</a>
 </div>
 <!-- END: main -->

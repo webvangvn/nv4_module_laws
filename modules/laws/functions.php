@@ -338,6 +338,7 @@ function check_upload2 ( )
         }
         else
         {
+			die('groupview');
             $groups_list = explode(",", $data_config['groups_view'] );
             if ( !in_array( $user_info['in_groups'], $groups_list ) )
             {
