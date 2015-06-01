@@ -12,7 +12,7 @@
 if ( ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 $module_version = array(
-	'name' => 'Archives',
+	'name' => 'Laws',
 	'modfuncs' => 'main,view,viewcat,viewroom,viewfield,vieworgan,search,content,down',
 	'change_alias' => 'main,view,viewcat,viewroom,viewfield,vieworgan,search,content,down',
 	'submenu' => 'main,view,viewcat,viewroom,viewfield,vieworgan,search,content,down',
