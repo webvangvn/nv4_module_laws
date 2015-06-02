@@ -97,8 +97,7 @@ if ( $savecat == '1' )
 			$stmt->bindParam( ':groups_view', $data['groups_view'], PDO::PARAM_STR );
 			$stmt->bindParam( ':who_view', $data['who_view'], PDO::PARAM_STR );
 			$stmt->execute();
-			$num=1;
-        	if ($num == 1)
+        	if ($stmt->rowCount())
 	        {
 				
 	        	if ( $data['parentid'] != $parentid_old )
