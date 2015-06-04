@@ -106,10 +106,10 @@ function nv_fix_cat_order ( $parentid = 0, $order = 0, $lev = 0 )
 function nv_fix_cat_row ( $catid = 0 )
 {
     global $db, $db_config, $module_name, $module_data;
-    $query = "SELECT count(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE catid=" . $catid . " AND status=1";
+    $query = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE catid='" . $catid . "' AND status=1";
     $result = $db->query( $query );
-    $num  = $result->fetch();
-    $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET numrow='" . $num . "' WHERE catid=" . intval( $catid );
+    $num  = $result->rowCount();
+    $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_cat SET numrow='" . $num . "' WHERE catid='" . intval( $catid )."'";
     $db->query( $sql );
 
 }
