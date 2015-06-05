@@ -14,7 +14,6 @@ if ( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
 define( 'NV_IS_MOD_ARCHIVES', true );
 
 
-
 global $global_archives_cat, $global_archives_room, $global_archives_field, $global_archives_organ;
 $global_archives_cat = $global_archives_cat = $global_archives_field = $global_archives_organ = array();
 $page = 1;
@@ -58,8 +57,10 @@ while ( $row = $result->fetch() )
     $global_archives_organ[$row['organid']] = $row;
 }
 
+
 $data_config = $module_config[$module_name];
-$per_page = $data_config['view_num'];
+//$per_page = $data_config['view_num'];
+
 function nv_archives_page ( $base_url, $num_items, $per_page, $start_item, $add_prevnext_text = true )
 {
     global $lang_global;
@@ -263,6 +264,7 @@ function redict_link ( $lang_view, $lang_back, $nv_redirect )
     exit();
 }
 
+
 function check_upload ( )
 {	
     global $data_config, $user_info, $op, $module_name;
@@ -301,13 +303,11 @@ function check_upload ( )
         }
         else
         {
-			
-            $groups_list = explode(",", $data_config['groups_view'] );
-            if ( !in_array( $user_info['in_groups'], $groups_list ) )
-            {
-                Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name );
+			if(!nv_user_in_groups($data_config['groups_view'] ))
+			{
+				Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name );
                 die();
-            }
+			}
         }
     }
 }
@@ -339,13 +339,13 @@ function check_upload2 ( )
         else
         {
 			
-            $groups_list = explode(",", $data_config['groups_view'] );
-            if ( !in_array( $user_info['in_groups'], $groups_list ) )
-            {
-                return false;
-            }
-            else 
-            	return true;
+            if(nv_user_in_groups($data_config['groups_view'] ))
+			{
+				return true;
+			}else{
+				return false;
+			}
         }
     }
 }
+

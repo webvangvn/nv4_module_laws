@@ -51,7 +51,7 @@ function check_upload3 ( )
     }
     elseif ( $data_config['who_upload'] == 3 )
     {
-        if ( ! defined( 'NV_IS_USER' ) )
+		if ( ! defined( 'NV_IS_USER' ) )
         {
             return false;
         }
@@ -61,21 +61,20 @@ function check_upload3 ( )
         }
         else
         {
-			die('groupview');
-            $groups_list = explode(",", $data_config['groups_view'] );
-            if ( !in_array( $user_info['in_groups'], $groups_list ) )
-            {
-                return false;
-            }
-            else 
-            	return true;
+			if(nv_user_in_groups($data_config['groups_view'] ))
+			{
+				return true;
+			}else{
+				return false;
+			}
+			
         }
     }
 }
 
 if ( defined( 'NV_SYSTEM' ) )
 {
-    global $site_mods;
+    global $site_mods,$user_info;
     $module = $block_config['module'];
     if ( isset( $site_mods[$module] ) )
     {
