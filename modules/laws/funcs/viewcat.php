@@ -79,10 +79,6 @@ $top_contents = "<div class=\"archives_links\">".$top_contents.$lik.$cur_link."<
 $html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
 $contents = call_user_func( $global_archives_cat[$catid]['viewcat'], $data_content, $top_contents ,$html_pages );
 
-include ( NV_ROOTDIR . "/includes/header.php" );
-echo nv_site_theme( $contents );
-include ( NV_ROOTDIR . "/includes/footer.php" );
-
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );
 include NV_ROOTDIR . '/includes/footer.php';

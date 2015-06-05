@@ -7,8 +7,14 @@
  * @Update to 4.x webvang (hoang.nguyen@webvang.vn)
  * @License GNU/GPL version 2 or any later version
  * @Createdate Fri, 29 May 2015 07:49:53 GMT
- */
 
+ if ( ! defined( 'NV_IS_ADMIN' ) ) {
+ 
+				$nv_redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
+                redict_link ( 'ban khong co quyen han', '', $nv_redirect );
+ };
+  */
+if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 check_upload();
 
@@ -178,13 +184,13 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 			$data_insert['sign'] = $data['sign'];
 			$data_insert['signtime'] = $data['signtime'];
 			$data_insert['organid'] = $data['organid'];
-
+			
 			$newid = $db->insert_id( $sql, 'id', $data_insert );
             if ( $newid > 0 )
             {
                 nv_del_moduleCache( $module_name );
                 nv_fix_cat_row ( $data['catid'] );
-                nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['addcontent'], $data['title'], $admin_info['userid'] );
+                nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['addcontent'], $data['title'], $user_info['userid'] );
                 $nv_redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
                 redict_link ( $lang_module['upload_ok'], $lang_module['upload_view'], $nv_redirect );
             }

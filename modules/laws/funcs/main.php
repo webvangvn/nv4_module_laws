@@ -37,6 +37,7 @@ if ( $data_config['view_type'] == "view_listall")
 			->offset( ( $page - 1 ) * $per_page );
 	$result = $db->query( $db->sql() );
 	$all_page = ( $num_items ) ? $num_items : 1;
+	
 	$data_content = array();
 	$i = $page;
 	while( $row = $result->fetch() )
@@ -83,10 +84,10 @@ elseif ( $data_config['view_type'] == "view_listcate")
             );
         }
     }
+	
     $contents = call_user_func( $data_config['view_type'], $data_content, "" );
 }
 else $contents = "";
-
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );
 include NV_ROOTDIR . '/includes/footer.php';

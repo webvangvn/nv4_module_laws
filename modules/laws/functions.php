@@ -60,8 +60,6 @@ while ( $row = $result->fetch() )
 
 $data_config = $module_config[$module_name];
 $per_page = $data_config['view_num'];
-
-
 function nv_archives_page ( $base_url, $num_items, $per_page, $start_item, $add_prevnext_text = true )
 {
     global $lang_global;
@@ -266,14 +264,15 @@ function redict_link ( $lang_view, $lang_back, $nv_redirect )
 }
 
 function check_upload ( )
-{
+{	
     global $data_config, $user_info, $op, $module_name;
+
     if ( $data_config['who_upload'] == 0 ) return true;
     elseif ( $data_config['who_upload'] == 1 )
     {
         if ( ! defined( 'NV_IS_USER' ) )
         {
-            $redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op;
+            $redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
             Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=users&" . NV_OP_VARIABLE . "=login&nv_redirect=" . nv_base64_encode( $redirect ) );
             die();
         }
@@ -291,7 +290,7 @@ function check_upload ( )
     {
         if ( ! defined( 'NV_IS_USER' ) )
         {
-            $redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op;
+            $redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
             Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=users&" . NV_OP_VARIABLE . "=login&nv_redirect=" . nv_base64_encode( $redirect ) );
             die();
         }
@@ -302,10 +301,11 @@ function check_upload ( )
         }
         else
         {
+			
             $groups_list = explode(",", $data_config['groups_view'] );
             if ( !in_array( $user_info['in_groups'], $groups_list ) )
             {
-                Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name );
+                Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name );
                 die();
             }
         }
@@ -338,7 +338,7 @@ function check_upload2 ( )
         }
         else
         {
-			die('groupview');
+			
             $groups_list = explode(",", $data_config['groups_view'] );
             if ( !in_array( $user_info['in_groups'], $groups_list ) )
             {
