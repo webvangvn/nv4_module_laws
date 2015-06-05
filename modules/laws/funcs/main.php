@@ -47,8 +47,8 @@ if ( $data_config['view_type'] == "view_listall")
 		$i ++;
 	}
 
-	//$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );	
-	$contents = call_user_func( $data_config['view_type'],$data_content,"");
+	$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );	
+	$contents = call_user_func( $data_config['view_type'],$data_content,$html_pages);
 }
 elseif ( $data_config['view_type'] == "view_listcate") 
 {
