@@ -59,7 +59,7 @@ while ( $row = $result->fetch() )
 
 
 $data_config = $module_config[$module_name];
-//$per_page = $data_config['view_num'];
+$per_page = $data_config['view_num'];
 
 function nv_archives_page ( $base_url, $num_items, $per_page, $start_item, $add_prevnext_text = true )
 {
