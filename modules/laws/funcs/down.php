@@ -35,9 +35,8 @@ if ( ! empty( $data_content['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR .
 {
     $file_basename = $data_content['filepath'];
 	$data_content['filepath'] = NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $data_content['filepath'];
-	require_once ( NV_ROOTDIR . '/includes/class/download.class.php' );
     $directory = NV_UPLOADS_REAL_DIR;
-	$download = new download( $data_content['filepath'], $directory, $file_basename );
+	$download = new NukeViet\Files\Download( $data_content['filepath'], $directory, $file_basename );
 	$download->download_file();
 	exit();
 }
