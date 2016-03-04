@@ -18,7 +18,7 @@ if ($ac=='del')
 	$id = $nv_Request->get_int( 'id', 'get', 0 );
 	$sql = "DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id = '" . intval( $id ) . "'";
     $result = $db->query( $sql );
-    nv_del_moduleCache( $module_name );
+    $nv_Cache->delMod( $module_name );
     nv_fix_catall_row ();
     die($lang_module['del_complate']);
 }
@@ -29,7 +29,7 @@ elseif ($ac=='delall')
     {
     	$sql = "DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id IN (" . $listall . ")";
 	    $result = $db->query( $sql );
-    	nv_del_moduleCache( $module_name );
+    	$nv_Cache->delMod( $module_name );
     	nv_fix_catall_row ();
     	die($lang_module['del_complate']);
     }

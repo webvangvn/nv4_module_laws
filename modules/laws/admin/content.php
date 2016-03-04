@@ -124,7 +124,7 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 			$newid = $db->insert_id( $sql, 'id', $data_insert );
             if ( $newid > 0 )
             {
-                nv_del_moduleCache( $module_name );
+                $nv_Cache->delMod( $module_name );
                 nv_fix_cat_row ( $data['catid'] );
 				nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['addcontent'], $data['title'], $admin_info['userid'] );
                 Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=main" );

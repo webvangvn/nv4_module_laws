@@ -57,7 +57,7 @@ if ( $nv_Request->get_int( 'save', 'post', 0 ) == '1' )
 	        if ( $newfieldid > 0 )
 	        {
 	        	nv_fix_field_order();
-	        	nv_del_moduleCache( $module_name );
+	        	$nv_Cache->delMod( $module_name );
 	            //nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['add_field'], $data['title'], $admin_info['userid'] );
 	            Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
 	            die();

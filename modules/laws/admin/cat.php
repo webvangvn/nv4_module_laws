@@ -74,7 +74,7 @@ if ( $savecat == '1' )
 	        if ( $newcatid > 0 )
 	        {
 	        	nv_fix_cat_order();
-				nv_del_moduleCache( $module_name );
+				$nv_Cache->delMod( $module_name );
 				nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['add_cat'], $data['title'], $admin_info['userid'] );
 	            Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
 	            die();
@@ -110,7 +110,7 @@ if ( $savecat == '1' )
 	                nv_fix_cat_order();
 					nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['edit_cat'], $data['title'], $admin_info['userid'] );
 	        	}
-				nv_del_moduleCache( $module_name );
+				$nv_Cache->delMod( $module_name );
 				
 	        	Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
 	            die();

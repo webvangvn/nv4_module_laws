@@ -25,16 +25,21 @@ if ( $savesetting == 1 )
     $groups = $nv_Request->get_typed_array( 'groups_view', 'post', 'int', array() );
     $groups = array_intersect( $groups, array_keys( $groups_list ) );
     $data['groups_view'] = implode( ",", $groups );
-    foreach ( $data as $config_name => $config_value )
-    {
-        $db->query( "REPLACE INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES('" . NV_LANG_DATA . "', '" . $module_name  . "', '" . $config_name  . "', '" . $config_value  . "')" );
+	
+    $sth = $db->prepare("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = :config_value WHERE lang = '" . NV_LANG_DATA . "' AND module = :module_name AND config_name = :config_name");
+    $sth->bindParam(':module_name', $module_name, PDO::PARAM_STR);
+    foreach ($data as $config_name => $config_value) {
+        $sth->bindParam(':config_name', $config_name, PDO::PARAM_STR);
+        $sth->bindParam(':config_value', $config_value, PDO::PARAM_STR);
+        $sth->execute();
     }
-	nv_del_moduleCache( $module_name );
+
+    $nv_Cache->delMod('settings');
+    $nv_Cache->delMod($module_name);
 	nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['config'], "setting", $admin_info['userid'] );
     Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . '=config' );
     die();
 }
-
 
 $xtpl = new XTemplate( $op . '.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file );
 $xtpl->assign( 'LANG', $lang_module );
