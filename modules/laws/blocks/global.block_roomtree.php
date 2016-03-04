@@ -88,7 +88,7 @@ if ( ! function_exists( 'draw_room_archives_sub' ) )
 }
 if ( defined( 'NV_SYSTEM' ) )
 {
-    global $site_mods, $module_name, $global_archives_room, $module_archives_room;
+    global $site_mods, $module_name, $global_archives_room, $module_archives_room, $nv_Cache;
     $module = $block_config['module'];
     if ( isset( $site_mods[$module] ) )
     {
@@ -101,7 +101,7 @@ if ( defined( 'NV_SYSTEM' ) )
         {
             $module_archives_room = array();
             $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_room ORDER BY orders ASC";
-            $list = nv_db_cache( $sql, 'roomid', $module );
+            $list = $nv_Cache->db( $sql, 'roomid', $module );
             foreach ( $list as $l )
             {
                 $module_archives_room[$l['roomid']] = $l;

@@ -50,4 +50,3 @@ if ( ! function_exists( 'nv_block_archives_search' ) )
 }
 
 $content = nv_block_archives_search();
-
