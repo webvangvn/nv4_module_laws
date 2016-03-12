@@ -90,3 +90,4 @@ if ( defined( 'NV_SYSTEM' ) )
         $content = nv_block_newarchives( $block_config );
     }
 }
+

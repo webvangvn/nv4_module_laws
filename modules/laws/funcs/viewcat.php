@@ -32,7 +32,7 @@ if ( ! empty( $array_op[2] ) )
         $page = intval( end( $temp ) );
     }
 }
-$base_url = "" . NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "/".$global_archives_cat[$catid]['alias']."-".$catid;;
+$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "/".$global_archives_cat[$catid]['alias']."-".$catid;;
 $order_by = 'id DESC';
 $db->sqlreset()
 	->select( 'COUNT(*)' )

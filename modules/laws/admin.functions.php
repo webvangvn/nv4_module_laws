@@ -260,7 +260,7 @@ function nv_fix_organ_order ( $parentid = 0, $order = 0, $lev = 0 )
 ///////////////////////
 function drawselect_number ( $select_name = "", $number_start = 0, $number_end = 1, $number_curent = 0, $func_onchange = "", $enable = "" )
 {
-    $html = '<select name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
+    $html = '<select class="form-control" name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
     for ( $i = $number_start; $i <= $number_end; $i ++ )
     {
         $select = ( $i == $number_curent ) ? 'selected="selected"' : '';
@@ -272,7 +272,7 @@ function drawselect_number ( $select_name = "", $number_start = 0, $number_end =
 
 function drawselect_status ( $select_name = "", $array_control_value, $value_curent = 0, $func_onchange = "", $enable = "" )
 {
-    $html = '<select name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
+    $html = '<select class="form-control w200" name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
     foreach ( $array_control_value as $val => $title )
     {
         $select = ( $val == $value_curent ) ? "selected=\"selected\"" : "";

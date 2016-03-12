@@ -109,17 +109,6 @@ function get_alias() {
 	}
 	return false;
 }
-function show_group() {
-	var igroup = $('#id_who_view').val();
-	if ( igroup == 3 )
-	{
-		$('#id_groups_view').show();
-	}
-	else
-	{
-		$('#id_groups_view').hide();
-	}
-}
 function search_rows()
 {
 	var catid = $('#catid').val();

@@ -94,7 +94,7 @@ if ( ! nv_function_exists( 'nv_archives_category' ) )
 
 if ( defined( 'NV_SYSTEM' ) )
 {
-    global $site_mods, $module_name, $global_archives_cat, $module_archives_cat, $nv_Cache;
+    global $site_mods, $module_name, $global_archives_cat, $module_archives_cat;
     $module = $block_config['module'];
     if ( isset( $site_mods[$module] ) )
     {
@@ -107,7 +107,7 @@ if ( defined( 'NV_SYSTEM' ) )
         {
             $module_archives_cat = array();
             $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_cat ORDER BY orders ASC";
-            $list = $nv_Cache->db( $sql, 'catid', $module );
+            $list = nv_db_cache( $sql, 'catid', $module );
             foreach ( $list as $l )
             {
                 $module_archives_cat[$l['catid']] = $l;

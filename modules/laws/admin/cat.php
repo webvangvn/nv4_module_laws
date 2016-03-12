@@ -12,8 +12,8 @@
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $page_title = $lang_module['cat'];
-
 $groups_list = nv_groups_list();
+
 $contents = "";
 $error = "";
 $parentid = $nv_Request->get_int( 'parentid', 'get', 0 );
@@ -227,9 +227,6 @@ if ( empty( $data['alias'] ) )
 {
     $xtpl->parse( 'main.form.getalias' );
 }
-//$array_who_view
-//$xtpl->assign( 'who_views', drawselect_status( "who_view", $array_who_view, $data['who_view'],'show_group()' ) );
-//$groups_list
 
 if (!empty($groups_list))
 {
@@ -246,6 +243,7 @@ if (!empty($groups_list))
 	    $xtpl->parse( 'main.form.groups_views' );
 	}
 }
+
 $xtpl->assign( 'hidediv', $data['who_view'] == 3 ? "visibility:visible" : "visibility:hidden" );
 $xtpl->assign( 'DATA', $data );
 $xtpl->parse( 'main.form' );

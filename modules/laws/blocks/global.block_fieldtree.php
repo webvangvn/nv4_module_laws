@@ -88,7 +88,7 @@ if ( ! function_exists( 'draw_field_archives_sub' ) )
 }
 if ( defined( 'NV_SYSTEM' ) )
 {
-    global $site_mods, $module_name, $global_archives_field, $module_archives_field, $nv_Cache;
+    global $site_mods, $module_name, $global_archives_field, $module_archives_field;
     $module = $block_config['module'];
     if ( isset( $site_mods[$module] ) )
     {
@@ -101,7 +101,7 @@ if ( defined( 'NV_SYSTEM' ) )
         {
             $module_archives_field = array();
             $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $site_mods[$module]['module_data'] . "_field ORDER BY orders ASC";
-            $list = $nv_Cache->db( $sql, 'fieldid', $module );
+            $list = nv_db_cache( $sql, 'fieldid', $module );
             foreach ( $list as $l )
             {
                 $module_archives_field[$l['fieldid']] = $l;

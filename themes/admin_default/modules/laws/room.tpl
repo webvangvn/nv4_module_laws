@@ -3,10 +3,10 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
         <tr>
-            <td align="center" width="50">{LANG.weight}</td>
-            <td>{LANG.room_name}</td>
-            <td>{LANG.alias}</td>
-            <td width="200"></td>
+            <td class="w100" align="center">{LANG.weight}</td>
+            <td class="w250">{LANG.room_name}</td>
+            <td class="w250">{LANG.alias}</td>
+            <td class="w250"></td>
         </tr>
     </thead>
     <!-- BEGIN: loop -->
@@ -33,22 +33,21 @@
     </div>
     <div class="clear"></div>
 	<!-- END: error -->
-    <form action="" method="post">
+    <form class="form-inline m-bottom" action="" method="post">
     <input name="save" type="hidden" value="1" />
     <input name="parentid_old" type="hidden" value="{DATA.parentid}" />
-    <table summary="" class="table table-striped table-bordered table-hover">
+    <table class="table table-striped table-bordered table-hover">
 		<tbody>
 			<tr>
 				<td align="right"><strong>{LANG.room_name}: </strong></td>
-				<td><input style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
+				<td><input class="form-control" style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
 			</tr>
 		</tbody>
 		<tbody class="second">
 			<tr>
 				<td align="right"><strong>{LANG.alias}: </strong></td>
 				<td>
-					<input style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>
-					<input type="button" value="GET" onclick="get_alias();" style="font-size:11px"/>
+					<input class="form-control" style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>&nbsp;<em class="fa fa-refresh fa-lg fa-pointer" onclick="get_alias();">&nbsp;</em>
 				</td>
 			</tr>
 		</tbody>
@@ -56,7 +55,7 @@
 			<tr>
 				<td align="right"><strong>{LANG.room_parent}: </strong></td>
 				<td>
-				<select name="parentid">
+				<select class="form-control" name="parentid">
                 	<option value="0" {ROW.select}>{LANG.room_main}</option>
 					<!-- BEGIN: roomlist -->
 					<option value="{ROW.roomid}" {ROW.select}>{ROW.xtitle}</option>
@@ -68,7 +67,7 @@
 		<tbody class="second">
 			<tr>
 				<td align="right"><strong>{LANG.keywords}: </strong></td>
-				<td><input style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
+				<td><input class="form-control" style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
 			</tr>
 		</tbody>
 		<tbody>
@@ -81,7 +80,7 @@
 		</tbody>
         <tbody>
         	<tr><td colspan="2" align="center">
-            	<input name="submit1" type="submit" value="{LANG.save}" /></center>
+            	<input class="btn btn-primary" name="submit1" type="submit" value="{LANG.save}" /></center>
             </td></tr>
         </tbody>
     </table>
@@ -100,7 +99,7 @@ show_group();
 
 <!-- BEGIN: roomdel -->
 <!-- BEGIN: subroom -->
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody>
     	<tr>
         	<td align="center">{TITLE}</td>
@@ -116,7 +115,7 @@ show_group();
 </table>    
 <!-- END: subroom-->
 <!-- BEGIN: noneroom -->
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody>
     	<tr>
         	<td align="center">{TITLE}</td>

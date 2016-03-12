@@ -30,10 +30,26 @@ $fieldid = $nv_Request->get_int( 'fieldid', 'get', 0 );
 $organid = $nv_Request->get_int( 'organid', 'get', 0 );
 $id = $nv_Request->get_int( 'id', 'get,post', 0 );
 $data = array( 
-    "id" => 0, "catid" => $catid, "title" => "", "hometext" => "", "bodytext" => "",
-	"keywords" => "", "filepath" => "", "otherpath" => "", "roomid" => $roomid,"fieldid" => $fieldid, "addtime" => NV_CURRENTTIME, 
-	"edittime" => NV_CURRENTTIME, "down" => 0, "view" => 0, "userid" => $admin_info['admin_id'], 
-	"status" => 1, "type" => 0 ,"sign"=>"","signtime"=>NV_CURRENTTIME,"organid"=>$organid
+    "id" => 0,
+	"catid" => $catid,
+	"title" => "",
+	"hometext" => "",
+	"bodytext" => "",
+	"keywords" => "",
+	"filepath" => "",
+	"otherpath" => "",
+	"roomid" => $roomid,
+	"fieldid" => $fieldid,
+	"addtime" => NV_CURRENTTIME, 
+	"edittime" => NV_CURRENTTIME,
+	"down" => 0,
+	"view" => 0,
+	"userid" => $admin_info['admin_id'], 
+	"status" => 1,
+	"type" => 0 ,
+	"sign"=>"",
+	"signtime"=>NV_CURRENTTIME,
+	"organid"=>$organid
 );
 /**
  * begin: post data 

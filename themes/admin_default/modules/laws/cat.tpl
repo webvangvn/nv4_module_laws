@@ -4,13 +4,13 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
         <tr>
-            <td align="center" width="50">{LANG.weight}</td>
-            <td>{LANG.title}</td>
-            <td>{LANG.alias}</td>
-            <td align="center" width="80">{LANG.inhome}</td>
-            <td align="center" width="100">{LANG.viewcat_page}</td>
-            <td align="center" width="50">{LANG.numlinks}</td>
-            <td width="200"></td>
+            <td class="w80"><strong>{LANG.weight}</strong></td>
+            <td class="w200"><strong>{LANG.title}</strong></td>
+            <td class="w120"><strong>{LANG.alias}</strong></td>
+            <td style="w50"><strong>{LANG.inhome}</strong></td>
+            <td class="w90"><strong>{LANG.viewcat_page}</strong></td>
+            <td class="w90"><strong>{LANG.numlinks}</strong></td>
+            <td class="w200"></td>
         </tr>
     </thead>
     <!-- BEGIN: loop -->
@@ -41,31 +41,31 @@
     </div>
     <div class="clear"></div>
 	<!-- END: error -->
-    <form action="" method="post">
-    <input name="save" type="hidden" value="1" />
-    <input name="parentid_old" type="hidden" value="{DATA.parentid}" />
+    <form class="form-inline m-bottom" action="" method="post">
+    <input class="form-control" name="save" type="hidden" value="1" />
+    <input class="form-control" name="parentid_old" type="hidden" value="{DATA.parentid}" />
 	<div class="table-responsive">
-		<table summary="" class="table table-striped table-bordered table-hover">
+		<table class="table table-striped table-bordered table-hover">
 			<tbody>
 				<tr>
-					<td align="right"><strong>{LANG.title}: </strong></td>
-					<td><input style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
+					<td><strong>{LANG.title}: </strong></td>
+					<td><input class="form-control" style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
 				</tr>
 			</tbody>
 			<tbody class="second">
 				<tr>
-					<td align="right"><strong>{LANG.alias}: </strong></td>
+					<td><strong>{LANG.alias}: </strong></td>
 					<td>
-						<input style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>
-						<input type="button" value="GET" onclick="get_alias();" style="font-size:11px"/>
+						<input class="form-control" style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>
+						&nbsp; <em class="fa fa-refresh fa-lg fa-pointer" onclick="get_alias();">&nbsp;</em>
 					</td>
 				</tr>
 			</tbody>
 			<tbody>
 				<tr>
-					<td align="right"><strong>{LANG.cat_parent}: </strong></td>
+					<td><strong>{LANG.cat_parent}: </strong></td>
 					<td>
-					<select name="parentid">
+					<select class="form-control" name="parentid">
 						<option value="0" {ROW.select}>{LANG.parent_main}</option>
 						<!-- BEGIN: catlist -->
 						<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
@@ -76,37 +76,31 @@
 			</tbody>
 			<tbody class="second">
 				<tr>
-					<td align="right"><strong>{LANG.keywords}: </strong></td>
-					<td><input style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
+					<td><strong>{LANG.keywords}: </strong></td>
+					<td><input class="form-control" style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
 				</tr>
 			</tbody>
 			<tbody>
 				<tr>
-					<td valign="top" align="right"><strong>{LANG.description} </strong></td>
+					<td valign="top"><strong>{LANG.description} </strong></td>
 					<td>
-					<textarea style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
+					<textarea class="form-control" style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
 					</td>
 				</tr>
 			</tbody>
-			<tbody class="second">
-			<tr>
-				<td align="right"><strong>{LANG.who_view}</strong></td>
-				<td> {who_views} </td>
-			</tr>
-			</tbody>
 			<tbody id="id_groups_view">
 			<tr>
-				<td align="right"><strong>{LANG.groups_view}</strong></td>
-				<td>    
-					<!-- BEGIN: groups_views -->
-					<span><input name="groups_view[]" type="checkbox" value="{groups_views.value}" {groups_views.check} />{groups_views.title}</span>
-					<!-- END: groups_views -->
+				<td><strong>{LANG.groups_view}</strong></td>
+				<td>
+						<!-- BEGIN: groups_views -->
+						<div class="row"><input class="form-control" name="groups_view[]" type="checkbox" value="{groups_views.value}" {groups_views.check} />{groups_views.title}</div>
+						<!-- END: groups_views -->
 				</td>
 			</tr>
 			</tbody>
 			<tbody>
 				<tr><td colspan="2" align="center">
-					<input name="submit1" type="submit" value="{LANG.save}" />
+					<input class="btn btn-primary" name="submit1" type="submit" value="{LANG.save}" />
 				</td></tr>
 			</tbody>
 		</table>
@@ -126,7 +120,7 @@ show_group();
 
 <!-- BEGIN: catdel -->
 <!-- BEGIN: subcat -->
-<table summary="" class="tab1" style="margin-bottom:2px">
+<table class="tab1" style="margin-bottom:2px">
     <tbody>
     	<tr>
         	<td align="center">{TITLE}</td>
@@ -135,14 +129,14 @@ show_group();
     <tbody class="second">
     	<tr>
         	<td align="center">
-            	<input type="button" value="{LANG.viewsubcat}" onclick="window.location='{PURL}'" />
+            	<input class="form-control" type="button" value="{LANG.viewsubcat}" onclick="window.location='{PURL}'" />
             </td>
         </tr>
     </tbody>
 </table>    
 <!-- END: subcat-->
 <!-- BEGIN: nonecat -->
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody>
     	<tr>
         	<td align="center">{TITLE}</td>
@@ -152,9 +146,9 @@ show_group();
     	<tr>
         	<td align="center">
             	<form action="" method="post">
-                <input type="hidden" name="del" value="1" />
-            	<input type="submit" value="{LANG.del_ok}"/>
-                <input type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
+                <input class="form-control" type="hidden" name="del" value="1" />
+            	<input class="form-control" type="submit" value="{LANG.del_ok}"/>
+                <input class="form-control" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
                 </form>
             </td>
         </tr>
@@ -162,14 +156,14 @@ show_group();
 </table>    
 <!-- END: nonecat-->
 <!-- BEGIN: havecat -->
-<table summary="" class="table table-striped table-bordered table-hover" >
+<table class="table table-striped table-bordered table-hover" >
     <tbody>
     	<tr>
         	<td align="center">{TITLE}</td>
         </tr>
     </tbody>
 </table>
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody class="second">
     	<tr>
         	<td align="center">
@@ -181,14 +175,14 @@ show_group();
     	<tr>
         	<td align="center">
             	<form action="" method="post">
-                <input type="hidden" name="delcatall" value="1" />
-            	<input type="submit" value="{LANG.del_ok}"/>
+                <input class="form-control" type="hidden" name="delcatall" value="1" />
+            	<input class="form-control" type="submit" value="{LANG.del_ok}"/>
                 </form>
             </td>
         </tr>
     </tbody>
 </table>  
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody class="second">
     	<tr>
         	<td align="center">
@@ -200,23 +194,23 @@ show_group();
     	<tr>
         	<td align="center">
             	<form action="" method="post">
-                <input type="hidden" name="delcatmove" value="1" />
+                <input class="form-control" type="hidden" name="delcatmove" value="1" />
             	<select name="catid">
 					<!-- BEGIN: catlist -->
 					<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
 					<!-- END: catlist -->
 				</select>
-                <input type="submit" value="{LANG.del_ok}"/>
+                <input class="form-control" type="submit" value="{LANG.del_ok}"/>
                 </form>
             </td>
         </tr>
     </tbody>
 </table>  
-<table summary="" class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-bordered table-hover">
     <tbody class="second">
     	<tr>
         	<td align="center">
-            	<input type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
+            	<input class="form-control" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
             </td>
         </tr>
     </tbody>

@@ -13,6 +13,7 @@ if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $title = $nv_Request->get_string( 'title', 'post,get', '' );
 $alias = change_alias( $title );
+$alias = strtolower($alias);
 include ( NV_ROOTDIR . "/includes/header.php" );
 echo $alias;
 include ( NV_ROOTDIR . "/includes/footer.php" );

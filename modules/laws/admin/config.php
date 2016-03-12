@@ -21,7 +21,7 @@ if ( $savesetting == 1 )
     $data['view_type'] = $nv_Request->get_string( 'view_type', 'post', '' );
     $data['view_num'] = $nv_Request->get_int( 'view_num', 'post', 0 );
     $data['who_upload'] = $nv_Request->get_int( 'who_view', 'post', 0 );
-    $data['status'] = $nv_Request->get_int( 'status', 'post', 0 );
+    $data['config_status'] = $nv_Request->get_int( 'status', 'post', 0 );
     $groups = $nv_Request->get_typed_array( 'groups_view', 'post', 'int', array() );
     $groups = array_intersect( $groups, array_keys( $groups_list ) );
     $data['groups_view'] = implode( ",", $groups );

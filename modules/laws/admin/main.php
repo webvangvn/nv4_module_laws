@@ -120,14 +120,14 @@ while ( $row = $result->fetch() )
 	$row['room_link'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&roomid=" . $row['roomid'] ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
 	$row['del'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&ac=del&id=".$row['id'];
 	$row['edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content&id=".$row['id'];
-	$row['link'] = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=view/".$row['alias']."-".$row['id'];
+	$row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view/'.$row['alias'].'-'.$row['id'] . $global_config['rewrite_exturl'];
 	$row['status'] = $arr_status[$row['status']];
 	$xtpl->assign( 'ROW', $row );
     $xtpl->parse( 'main.loop' );
     $i++;
 }
 //end: listdata
-$base_url = "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=".$ordername."&order=" . $order;
+$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=".$ordername."&order=" . $order;
 $generate_page = nv_generate_page( $base_url, $all_page, $per_page, $page );
 if ( $generate_page != "" ) 
 {
