@@ -1,25 +1,22 @@
 <!-- BEGIN: main -->
 <table class="archives_list">
-<center><b>HỆ THỐNG QUẢN LÝ VĂN BẢN</b></center>
 	<thead>
     	<tr>
-        	<td align="center" width="10">{LANG.no}</td>
-            <td align="center" width="20">{LANG.doc_name}</td>
-            <td align="center" width="200">{LANG.hometext}</td>
-            <td align="center" width="30">{LANG.signtime}</td>
-            <td align="center" width="30">{LANG.file}</td>
+        	<td class="w100">{LANG.no}</td>
+            <td class="w150">{LANG.doc_name}</td>
+            <td class="w200">{LANG.hometext}</td>
+            <td class="w100">{LANG.signtime}</td>
+            <td class="w100">{LANG.doc_status}</td>
         </tr>
     </thead>
     <!-- BEGIN: loop -->
     <tbody>
     	<tr>
         	<td align="center">{ROW.no}</td>
-            <td><a href="{ROW.view}">{ROW.title}</a></td>
-            <td><a href="{ROW.view}"><p align="justify">{ROW.hometext}</p></a></td>
+            <td><a href="{ROW.view}"><h4>{ROW.title}</h4></a><em>{ROW.pubtime}</em></td>
+            <td><p align="justify">{ROW.hometext}</p></td>
             <td>{ROW.signtime}</td>
-            <td align="center"><a href="{ROW.down}">
-      			<span class="archives_down" style="background:url({NV_BASE_SITEURL}themes/{TEMPLATE}/images/archives/{ROW.xfile}.png) no-repeat center left;">{LANG.down}</span>
-            </a></td>
+            <td align="center">{ROW.doc_status}</td>
         </tr>
     </tbody>
     <!-- END: loop -->

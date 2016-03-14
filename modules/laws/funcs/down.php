@@ -23,12 +23,13 @@ if ( ! empty( $array_op[1] ) )
         $id = intval( end( $temp ) );
     }
 }
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id = '" . $id . "'";
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_rows WHERE id = '. $id;
 $result = $db->query( $sql );
 $data_content = $result->fetch();
-if ( empty( $data_content ) ) die( 'stop!!' );
+if ( empty( $data_content ) ) die( 'Stop!!' );
 
-$sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET down=down+1 WHERE id = '" . $id . "'";
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET down=down+1 WHERE id = '. $id;
+
 $result = $db->query( $sql );
 
 if ( ! empty( $data_content['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $data_content['filepath'] ) )

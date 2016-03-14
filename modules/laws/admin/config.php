@@ -24,6 +24,7 @@ if ( $savesetting == 1 )
     $data['config_status'] = $nv_Request->get_int( 'status', 'post', 0 );
     $groups = $nv_Request->get_typed_array( 'groups_view', 'post', 'int', array() );
     $groups = array_intersect( $groups, array_keys( $groups_list ) );
+    $data['structure_upload'] = $nv_Request->get_title('structure_upload', 'post', '', 0);
     $data['groups_view'] = implode( ",", $groups );
 	
     $sth = $db->prepare("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value = :config_value WHERE lang = '" . NV_LANG_DATA . "' AND module = :module_name AND config_name = :config_name");
@@ -49,9 +50,40 @@ $xtpl->assign( 'NV_BASE_ADMINURL', NV_BASE_ADMINURL );
 $xtpl->assign( 'NV_NAME_VARIABLE', NV_NAME_VARIABLE );
 $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'MODULE_NAME', $module_name );
+$xtpl->assign( 'MODULE_UPLOAD', $module_upload );
 $xtpl->assign( 'OP', $op );
 
 $xtpl->assign( 'DATA', $data );
+
+$array_structure_image = array();
+$array_structure_image[''] = NV_UPLOADS_DIR . '/' . $module_upload;
+$array_structure_image['Y'] = NV_UPLOADS_DIR . '/' . $module_upload . '/' . date('Y');
+$array_structure_image['Ym'] = NV_UPLOADS_DIR . '/' . $module_upload . '/' . date('Y_m');
+$array_structure_image['Y_m'] = NV_UPLOADS_DIR . '/' . $module_upload . '/' . date('Y/m');
+$array_structure_image['Ym_d'] = NV_UPLOADS_DIR . '/' . $module_upload . '/' . date('Y_m/d');
+$array_structure_image['Y_m_d'] = NV_UPLOADS_DIR . '/' . $module_upload . '/' . date('Y/m/d');
+$array_structure_image['username'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin';
+
+$array_structure_image['username_Y'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin/' . date('Y');
+$array_structure_image['username_Ym'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin/' . date('Y_m');
+$array_structure_image['username_Y_m'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin/' . date('Y/m');
+$array_structure_image['username_Ym_d'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin/' . date('Y_m/d');
+$array_structure_image['username_Y_m_d'] = NV_UPLOADS_DIR . '/' . $module_upload . '/username_admin/' . date('Y/m/d');
+
+$structure_image_upload = isset($module_config[$module_name]['structure_upload']) ? $module_config[$module_name]['structure_upload'] : "Ym";
+
+// Thu muc uploads
+foreach ($array_structure_image as $type => $dir) {
+    $xtpl->assign('STRUCTURE_UPLOAD', array(
+        'key' => $type,
+        'title' => $dir,
+        'selected' => $type == $structure_image_upload ? ' selected="selected"' : ''
+    ));
+    $xtpl->parse('main.structure_upload');
+}
+
+$xtpl->assign('PATH', defined('NV_IS_SPADMIN') ? "" : NV_UPLOADS_DIR . '/' . $module_upload);
+$xtpl->assign('CURRENTPATH', defined('NV_IS_SPADMIN') ? "files" : NV_UPLOADS_DIR . '/' . $module_upload);
 
 $home_view = array( 
     "view_listall" => "", "view_listcate" => "", "view_none" => "" 
@@ -79,6 +111,18 @@ if (!empty($groups_list))
 	    $xtpl->parse( 'main.groups_views' );
 	}
 }
+
+// So bai hien thi trang chu
+for ($i = 5; $i <= 50; ++$i) {
+    $xtpl->assign('VIEW_NUM', array(
+        'key' => $i,
+        'title' => $i,
+        'selected' => $i == $module_config[$module_name]['view_num'] ? ' selected="selected"' : ''
+    ));
+    $xtpl->parse('main.view_num');
+}
+
+
 $check = ( $data['status'] == '1' ) ? "checked=\"checked\"" : "";
 $xtpl->assign( 'ck_status', $check );
 

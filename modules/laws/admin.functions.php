@@ -311,3 +311,42 @@ function GetCatidInParent ( $catid )
     }
     return array_unique( $array_cat );
 }
+/**
+ * redirect()
+ *
+ * @param string $msg1
+ * @param string $msg2
+ * @param mixed $nv_redirect
+ * @return
+ */
+function redirect($msg1 = '', $msg2 = '', $nv_redirect, $autoSaveKey = '', $go_back = '')
+{
+    global $global_config, $module_file, $module_name;
+    $xtpl = new XTemplate('redirect.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+
+    if (empty($nv_redirect)) {
+        $nv_redirect = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
+    }
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+    $xtpl->assign('NV_REDIRECT', $nv_redirect);
+    $xtpl->assign('MSG1', $msg1);
+    $xtpl->assign('MSG2', $msg2);
+
+    if (! empty($autoSaveKey)) {
+        $xtpl->assign('AUTOSAVEKEY', $autoSaveKey);
+        $xtpl->parse('main.removelocalstorage');
+    }
+
+    if ($go_back) {
+        $xtpl->parse('main.go_back');
+    } else {
+        $xtpl->parse('main.meta_refresh');
+    }
+
+    $xtpl->parse('main');
+    $contents = $xtpl->text('main');
+
+    include NV_ROOTDIR . '/includes/header.php';
+    echo nv_admin_theme($contents);
+    include NV_ROOTDIR . '/includes/footer.php';
+}

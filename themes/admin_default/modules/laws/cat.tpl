@@ -4,12 +4,12 @@
 <table class="table table-striped table-bordered table-hover">
 	<thead>
         <tr>
-            <td class="w80"><strong>{LANG.weight}</strong></td>
-            <td class="w200"><strong>{LANG.title}</strong></td>
-            <td class="w120"><strong>{LANG.alias}</strong></td>
-            <td style="w50"><strong>{LANG.inhome}</strong></td>
-            <td class="w90"><strong>{LANG.viewcat_page}</strong></td>
-            <td class="w90"><strong>{LANG.numlinks}</strong></td>
+            <td class="w100"><strong>{LANG.weight}</strong></td>
+            <td class="w250"><strong>{LANG.title}</strong></td>
+            <td class="w250"><strong>{LANG.alias}</strong></td>
+            <td class="w100"><strong>{LANG.inhome}</strong></td>
+            <td class="w100"><strong>{LANG.viewcat_page}</strong></td>
+            <td class="w100"><strong>{LANG.numlinks}</strong></td>
             <td class="w200"></td>
         </tr>
     </thead>

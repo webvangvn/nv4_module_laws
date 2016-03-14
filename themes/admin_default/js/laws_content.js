@@ -9,7 +9,7 @@
  
  
 $(document).ready(function() {
-	$("#signtime,#exp_date").datepicker({
+	$("#pubtime,#signtime,#exptime").datepicker({
 		showOn : "both",
 		dateFormat : "dd/mm/yy",
 		changeMonth : true,

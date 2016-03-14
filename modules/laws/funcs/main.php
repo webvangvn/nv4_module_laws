@@ -14,18 +14,10 @@ if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-if ( ! empty( $array_op[1] ) )
-{
-    $temp = explode( '-', $array_op[1] );
-    if ( ! empty( $temp ) )
-    {
-        $page = intval( end( $temp ) );
-    }
-}
-$base_url = "" . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
+$base_url = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 if ( $data_config['view_type'] == "view_listall")
 {
-	$order_by = 'id DESC';
+	$order_by = 'addtime DESC';
 	$db->sqlreset()
 		->select( 'COUNT(*)' )
 		->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
@@ -39,7 +31,7 @@ if ( $data_config['view_type'] == "view_listall")
 	$all_page = ( $num_items ) ? $num_items : 1;
 	
 	$data_content = array();
-	$i = $page;
+	$i = 1;
 	while( $row = $result->fetch() )
 	{
 		$row['no'] = $i;
@@ -52,7 +44,6 @@ if ( $data_config['view_type'] == "view_listall")
 }
 elseif ( $data_config['view_type'] == "view_listcate") 
 {
-
 
 	$data_content = array();
 	foreach ( $global_archives_cat as $catid_i => $catinfo_i)	
@@ -72,7 +63,7 @@ elseif ( $data_config['view_type'] == "view_listcate")
 			$result = $db->query( $db->sql() );
             $all_page = ( $num_items ) ? $num_items : 1;
             $data_content_temp = array();
-            $i = $page + 1;
+            $i = 1;
             while ( $row = $result->fetch() )
             {
                 $row['no'] = $i;

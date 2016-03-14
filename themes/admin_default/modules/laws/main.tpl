@@ -3,27 +3,31 @@
 <div class="table-responsive">
 <table class="table table-striped table-bordered table-hover">
     <tbody>
-    <tr>
-        <td>
-			<input class="form-control" type="text" value="{q}" maxlength="64" name="q" id="idq" style="width: 265px">
-			<input class="btn btn-primary" type="button" value="{LANG.search}" onClick="search_rows()">
-        	{LANG.search_cat} :
-            <select class="form-control" name="catid" id="catid">
-                <option value="0">{LANG.search_cat_all}</option>
-                <!-- BEGIN: cloop -->
-                <option value="{CAT.catid}" {CAT.select}>{CAT.xtitle}</option>
-                <!-- END: cloop -->
-            </select>
-         	{LANG.search_per_page}
-			<input class="form-control" type="text" name="per_page" value="{per_page}" id="idper_page" style="width:50px" />
-         </td>
-    </tr>
+		<tr>
+			<td>
+				<input class="form-control" type="text" value="{q}" maxlength="64" name="q" id="idq" style="width: 265px">
+				<input class="btn btn-primary" type="button" value="{LANG.search}" onClick="search_rows()">
+				{LANG.search_cat} :
+				<select class="form-control" name="catid" id="catid">
+					<option value="0">{LANG.search_cat_all}</option>
+					<!-- BEGIN: cloop -->
+					<option value="{CAT.catid}" {CAT.select}>{CAT.xtitle}</option>
+					<!-- END: cloop -->
+				</select>
+				{LANG.search_per_page}
+				<select class="form-control" id="idper_page" name="per_page">
+					<option value="--------------">{LANG.search_per_page}</option>
+					<!-- BEGIN: per_page -->
+					<option value="{PER_PAGE.title}" {PER_PAGE.selected}>{PER_PAGE.title}</option>
+					<!-- END: per_page -->
+				</select>
+			 </td>
+		</tr>
     </tbody>
 </table>
 </div>
 <input type="hidden" name ="checkss" value="{session_id}"/>
 </form>
-
 <form class="form-inline m-bottom" name="block_list">
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
@@ -73,8 +77,8 @@
 	</table>
 </form>
 <script type="text/javascript">
-clickcheckall();
-delete_one('adel','{LANG.del_confim}','{URLBACK}');
-delete_all('idlist','delall','{LANG.del_confim}','{LANG.no_select_items}','{DELALL}','{URLBACK}');
+	clickcheckall();
+	delete_one('adel','{LANG.del_confim}','{URLBACK}');
+	delete_all('idlist','delall','{LANG.del_confim}','{LANG.no_select_items}','{DELALL}','{URLBACK}');
 </script>
 <!-- END: main -->

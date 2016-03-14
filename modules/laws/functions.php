@@ -13,19 +13,27 @@ if ( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
 
 define( 'NV_IS_MOD_ARCHIVES', true );
 
-
 global $global_archives_cat, $global_archives_room, $global_archives_field, $global_archives_organ;
-$global_archives_cat = $global_archives_cat = $global_archives_field = $global_archives_organ = array();
+$global_archives_field = $global_archives_organ = array();
 $page = 1;
-$link = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=viewcat";
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat" . " ORDER BY orders ASC";
-$result = $db->query( $sql );
-while ( $row = $result->fetch( ) )
-{
-    $link_i = $link . "/" . $row['alias'] . "-" . $row['catid'];
-    $row['link'] = $link_i;
-    $global_archives_cat[$row['catid']] = $row;
+
+$global_archives_cat = array();
+$catid = 0;
+$parentid = 0;
+$alias_cat_url = isset($array_op[0]) ? $array_op[0] : '';
+$array_mod_title = array();
+
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cat ORDER BY orders ASC';
+$list = $nv_Cache->db($sql, 'catid', $module_name);
+foreach ($list as $l) {
+    $global_archives_cat[$l['catid']] = $l;
+    $global_archives_cat[$l['catid']]['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $l['alias'];
+    if ($alias_cat_url == $l['alias']) {
+        $catid = $l['catid'];
+        $parentid = $l['parentid'];
+    }
 }
+
 /***/
 $link = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=viewroom";
 $sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_room" . " ORDER BY orders ASC";
@@ -230,8 +238,8 @@ function nv_fix_cat_row ( $catid = 0 )
 
 function nv_fix_catall_row ( )
 {
-    global $global_array_cat;
-    foreach ( $global_array_cat as $catid_i => $catinfo_i )
+    global $global_archives_cat;
+    foreach ( $global_archives_cat as $catid_i => $catinfo_i )
     {
         nv_fix_cat_row( $catid_i );
     }
@@ -349,3 +357,51 @@ function check_upload2 ( )
     }
 }
 
+$count_op = sizeof($array_op);
+if (! empty($array_op) and $op == 'main') {
+    $op = 'main';
+    if ($count_op == 1 or substr($array_op[1], 0, 5) == 'page-') {
+        if ($count_op > 1 or $catid > 0) {
+            $op = 'viewcat';
+            if( isset($array_op[1]) and substr($array_op[1], 0, 5) == 'page-' ){
+                $page = intval(substr($array_op[1], 5));   
+            }
+        }
+        elseif ($catid == 0) {
+            $contents = $lang_module['nocatpage'] . $array_op[0];       
+            if (isset($array_op[0]) and substr($array_op[0], 0, 5) == 'page-') {
+                $page = intval(substr($array_op[0], 5));
+            }
+        }
+    } elseif ($count_op == 2) {
+        $array_page = explode('-', $array_op[1]);
+        $id = intval(end($array_page));
+        $number = strlen($id) + 1;
+        $alias_url = substr($array_op[1], 0, -$number);
+        if ($id > 0 and $alias_url != '') {
+            if ($catid > 0) {
+				$op = 'view';
+			} else {
+				//muc tieu neu xoa chuyen muc cu hoac doi ten alias chuyen muc thi van rewrite duoc bai viet
+				$_row = $db->query( 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_rows WHERE id = ' . $id )->fetch();
+				if (!empty($_row) and isset($global_archives_cat[$_row['catid']])) {
+    				$url_Permanently = nv_url_rewrite( NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$_row['catid']]['alias'] . '/' . $_row['alias'] . '-' . $_row['catid'] . $global_config['rewrite_exturl'], true );
+    				header( "HTTP/1.1 301 Moved Permanently" );
+    				header( 'Location:' . $url_Permanently );
+    				exit();
+				}
+			}
+        }
+    }
+    $parentid = $catid;
+    while ($parentid > 0) {
+        $array_cat_i = $global_archives_cat[$parentid];
+        $array_mod_title[] = array(
+            'catid' => $parentid,
+            'title' => $array_cat_i['title'],
+            'link' => $array_cat_i['link']
+        );
+        $parentid = $array_cat_i['parentid'];
+    }
+    sort($array_mod_title, SORT_NUMERIC);
+}

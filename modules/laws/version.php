@@ -21,6 +21,6 @@ $module_version = array(
 	'version' => '4.0.27',
 	'date' => 'Fri, 04 Mar 2016 07:49:54 GMT',
 	'author' => 'PCD-GROUP (contact@dinhpc.com)',
-	'uploads_dir' => array($module_upload),
+    'uploads_dir' => array( $module_upload, $module_upload . '/tmp' ),
 	'note' => 'Update to 4.x webvang (hoang.nguyen@webvang.vn)'
 );

@@ -74,7 +74,7 @@
 			<tr>
 				<td valign="top" align="right"><strong>{LANG.description} </strong></td>
 				<td>
-				<textarea style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
+				<textarea class="form-control" style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
 				</td>
 			</tr>
 		</tbody>

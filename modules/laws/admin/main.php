@@ -16,7 +16,7 @@ $ac = $nv_Request->get_string( 'ac', 'get', 0 );
 if ($ac=='del')
 {
 	$id = $nv_Request->get_int( 'id', 'get', 0 );
-	$sql = "DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id = '" . intval( $id ) . "'";
+	$sql = 'DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_rows WHERE id = ' . intval( $id );
     $result = $db->query( $sql );
     $nv_Cache->delMod( $module_name );
     nv_fix_catall_row ();
@@ -39,16 +39,16 @@ elseif ($ac=='delall')
 $page_title = $lang_module['main'];
 $catid = $nv_Request->get_int( 'catid', 'get', 0 );
 $roomid = $nv_Request->get_int( 'roomid', 'get', 0 );
-$per_page = $nv_Request->get_int( 'per_page', 'get',50);
+$per_page = $nv_Request->get_int( 'per_page', 'get', 5);
 $page = $nv_Request->get_int( 'page', 'get', 0 );
 $q = $nv_Request->get_string( 'q', 'get', '', 1 );
 $ordername = $nv_Request->get_string( 'ordername', 'get', 'id' );
 $order = ( $nv_Request->get_string( 'order', 'get' ) == "desc" ) ? 'asc' : 'desc';
-$base_url_id = "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
-$base_url_name = "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=title&order=" . $order . "&page=" . $page;
-$base_url_room = "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=roomid&order=" . $order . "&page=" . $page;
-$back_url = "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
-$table = "".NV_PREFIXLANG . "_" . $module_data . "_rows";
+$base_url_id = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
+$base_url_name = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=title&order=" . $order . "&page=" . $page;
+$base_url_room = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=roomid&order=" . $order . "&page=" . $page;
+$back_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
+$table = NV_PREFIXLANG . "_" . $module_data . "_rows";
 $arr_status = array(0=>$lang_module['status0'],1=>$lang_module['status1']);
 /**
  * begin: formview data 
@@ -66,13 +66,12 @@ $xtpl->assign( 'base_url_name', $base_url_name );
 $xtpl->assign( 'base_url_id', $base_url_id );
 $xtpl->assign( 'base_url_room', $base_url_room );
 $xtpl->assign( 'q', $q );
-$xtpl->assign( 'per_page', $per_page );
 $xtpl->assign( 'URLBACK', $back_url );
-$xtpl->assign( 'DELALL', "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op."&ac=delall" );
-$xtpl->assign( 'ADDCONTENT', "" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content" );
+$xtpl->assign( 'DELALL', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op."&ac=delall" );
+$xtpl->assign( 'ADDCONTENT', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content" );
 foreach ( $global_array_cat as $catid_i => $array_value )
 {
-    $xtitle_i = "";
+    $xtitle_i = '';
     if ( $array_value['lev'] > 0 )
     {
         $xtitle_i .= "&nbsp;&nbsp;&nbsp;|";
@@ -89,21 +88,30 @@ foreach ( $global_array_cat as $catid_i => $array_value )
     $xtpl->assign( 'CAT', $array_cat );
     $xtpl->parse( 'main.cloop' );
 }
+for ($i = 5; $i <= 30; ++$i) {
+    $xtpl->assign('PER_PAGE', array(
+        'key' => $i,
+        'title' => $i,
+        'selected' => $i == $per_page ? ' selected="selected"' : ''
+    ));
+    $xtpl->parse('main.per_page');
+}
+
 //end: view cat
 
 //begin: listdata
 $where = array();
-$where_sql="";
-if ( $catid > 0 ) $where[] = " catid=".$catid. " "; 
-if ( $roomid > 0 ) $where[] = " roomid=".$roomid. " "; 
-if ( !empty($q) ) $where[] = " ( title LIKE '%" .  $q  . "%' OR hometext LIKE '%" .  $q  . "%' ) "; 
+$where_sql='';
+if ( $catid > 0 ) $where[] = ' catid = '.$catid. ' '; 
+if ( $roomid > 0 ) $where[] = ' roomid = '.$roomid. ' '; 
+if ( !empty($q) ) $where[] = ' ( title LIKE "%' .  $q  . '%" OR hometext LIKE "%' .  $q  . '%")'; 
 if ( !empty($where) ) 
 {
-	$where_sql = " WHERE " . implode(" AND ", $where);
+	$where_sql = ' WHERE ' . implode(' AND ', $where);
 }
-$ord_sql = "ORDER BY " . $ordername . " " . $order . "";
-$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM " . $table . " ".$where_sql." " . $ord_sql . " LIMIT " . $page . "," . $per_page;
-//die($sql);
+$ord_sql = 'ORDER BY ' . $ordername . ' ' . $order . '';
+$sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM ' . $table . ' '.$where_sql.' ' . $ord_sql . ' LIMIT ' . $page . ',' . $per_page;
+
 $result = $db->query( $sql );
 
 $result_all = $db->query( "SELECT FOUND_ROWS()" );
@@ -113,28 +121,27 @@ $all_page = ( $numf ) ? $numf : 1;
 $i=1;
 while ( $row = $result->fetch() )
 {
-	$row['bg'] = ($i%2==0)? "class=\"second\"":"";
-	$row['cat_title'] = isset( $global_array_cat[$row['catid']]['title'] ) ? $global_array_cat[$row['catid']]['title'] : "";
-	$row['cat_link'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $row['catid'] ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
-	$row['room_title'] = isset( $global_array_room[$row['roomid']]['title'] )? $global_array_room[$row['roomid']]['title'] : "" ;
-	$row['room_link'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&roomid=" . $row['roomid'] ."&q=" . $q . "&ordername=id&order=" . $order . "&page=" . $page;
-	$row['del'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&ac=del&id=".$row['id'];
-	$row['edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content&id=".$row['id'];
-	$row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view/'.$row['alias'].'-'.$row['id'] . $global_config['rewrite_exturl'];
+	$row['bg'] = ($i%2==0)? 'class=\'second\'':'';
+	$row['cat_title'] = isset( $global_array_cat[$row['catid']]['title'] ) ? $global_array_cat[$row['catid']]['title'] : '';
+	$row['cat_link'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&per_page=' . $per_page . '&catid=' . $row['catid'] .'&q=' . $q . '&ordername=id&order=' . $order . '&page=' . $page;
+	$row['room_title'] = isset( $global_array_room[$row['roomid']]['title'] )? $global_array_room[$row['roomid']]['title'] : '' ;
+	$row['room_link'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&per_page=' . $per_page . '&roomid=' . $row['roomid'] .'&q=' . $q . '&ordername=id&order=' . $order . '&page=' . $page;
+	$row['del'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&ac=del&id='.$row['id'];
+	$row['edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id='.$row['id'];
+	$row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
 	$row['status'] = $arr_status[$row['status']];
 	$xtpl->assign( 'ROW', $row );
     $xtpl->parse( 'main.loop' );
     $i++;
 }
 //end: listdata
-$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&per_page=" . $per_page . "&catid=" . $catid ."&q=" . $q . "&ordername=".$ordername."&order=" . $order;
+$base_url = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&per_page=' . $per_page . '&catid=' . $catid .'&q=' . $q . '&ordername='.$ordername.'&order=' . $order;
 $generate_page = nv_generate_page( $base_url, $all_page, $per_page, $page );
-if ( $generate_page != "" ) 
+if ( !empty($generate_page) ) 
 {
 	$xtpl->assign( 'generate_page', $generate_page );
 	$xtpl->parse( 'main.page' );
 }
-
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

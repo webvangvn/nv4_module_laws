@@ -12,7 +12,63 @@
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $page_title = $lang_module['content'];
-$month_dir_module = nv_mkdir( NV_UPLOADS_REAL_DIR . '/' . $module_name, date( "Y_m" ), true );
+$error = array();
+
+$username_alias = change_alias($admin_info['username']);
+$array_structure_image = array();
+$array_structure_image[''] = $module_upload;
+$array_structure_image['Y'] = $module_upload . '/' . date('Y');
+$array_structure_image['Ym'] = $module_upload . '/' . date('Y_m');
+$array_structure_image['Y_m'] = $module_upload . '/' . date('Y/m');
+$array_structure_image['Ym_d'] = $module_upload . '/' . date('Y_m/d');
+$array_structure_image['Y_m_d'] = $module_upload . '/' . date('Y/m/d');
+$array_structure_image['username'] = $module_upload . '/' . $username_alias;
+
+$array_structure_image['username_Y'] = $module_upload . '/' . $username_alias . '/' . date('Y');
+$array_structure_image['username_Ym'] = $module_upload . '/' . $username_alias . '/' . date('Y_m');
+$array_structure_image['username_Y_m'] = $module_upload . '/' . $username_alias . '/' . date('Y/m');
+$array_structure_image['username_Ym_d'] = $module_upload . '/' . $username_alias . '/' . date('Y_m/d');
+$array_structure_image['username_Y_m_d'] = $module_upload . '/' . $username_alias . '/' . date('Y/m/d');
+
+$structure_upload = isset($module_config[$module_name]['structure_upload']) ? $module_config[$module_name]['structure_upload'] : 'Ym';
+$currentpath = isset($array_structure_image[$structure_upload]) ? $array_structure_image[$structure_upload] : '';
+
+if (file_exists(NV_UPLOADS_REAL_DIR . '/' . $currentpath)) {
+    $upload_real_dir_page = NV_UPLOADS_REAL_DIR . '/' . $currentpath;
+} else {
+    $upload_real_dir_page = NV_UPLOADS_REAL_DIR . '/' . $module_upload;
+    $e = explode('/', $currentpath);
+    if (! empty($e)) {
+        $cp = '';
+        foreach ($e as $p) {
+            if (! empty($p) and ! is_dir(NV_UPLOADS_REAL_DIR . '/' . $cp . $p)) {
+                $mk = nv_mkdir(NV_UPLOADS_REAL_DIR . '/' . $cp, $p);
+                if ($mk[0] > 0) {
+                    $upload_real_dir_page = $mk[2];
+                    try {
+                        $db->query("INSERT INTO " . NV_UPLOAD_GLOBALTABLE . "_dir (dirname, time) VALUES ('" . NV_UPLOADS_DIR . "/" . $cp . $p . "', 0)");
+                    }
+                    catch (PDOException $e) {
+                        trigger_error($e->getMessage());
+                    }
+                }
+            } elseif (! empty($p)) {
+                $upload_real_dir_page = NV_UPLOADS_REAL_DIR . '/' . $cp . $p;
+            }
+            $cp .= $p . '/';
+        }
+    }
+    $upload_real_dir_page = str_replace('\\', '/', $upload_real_dir_page);
+}
+
+$currentpath = str_replace(NV_ROOTDIR . '/', '', $upload_real_dir_page);
+$uploads_dir_user = NV_UPLOADS_DIR . '/' . $module_upload;
+if (! defined('NV_IS_SPADMIN') and strpos($structure_upload, 'username') !== false) {
+    $array_currentpath = explode('/', $currentpath);
+    if ($array_currentpath[2] == $username_alias) {
+        $uploads_dir_user = NV_UPLOADS_DIR . '/' . $module_upload . '/' . $username_alias;
+    }
+}
 
 if (empty($global_array_cat))
 {
@@ -30,30 +86,34 @@ $fieldid = $nv_Request->get_int( 'fieldid', 'get', 0 );
 $organid = $nv_Request->get_int( 'organid', 'get', 0 );
 $id = $nv_Request->get_int( 'id', 'get,post', 0 );
 $data = array( 
-    "id" => 0,
-	"catid" => $catid,
-	"title" => "",
-	"hometext" => "",
-	"bodytext" => "",
-	"keywords" => "",
-	"filepath" => "",
-	"otherpath" => "",
-	"roomid" => $roomid,
-	"fieldid" => $fieldid,
-	"addtime" => NV_CURRENTTIME, 
-	"edittime" => NV_CURRENTTIME,
-	"down" => 0,
-	"view" => 0,
-	"userid" => $admin_info['admin_id'], 
-	"status" => 1,
-	"type" => 0 ,
-	"sign"=>"",
-	"signtime"=>NV_CURRENTTIME,
-	"organid"=>$organid
+    'id' => 0,
+	'catid' => $catid,
+	'title' => '',
+	'hometext' => '',
+	'bodytext' => '',
+	'keywords' => '',
+	'filepath' => '',
+	'otherpath' => '',
+	'roomid' => $roomid,
+	'fieldid' => $fieldid,
+	'addtime' => NV_CURRENTTIME, 
+	'edittime' => NV_CURRENTTIME,
+	'down' => 0,
+	'view' => 0,
+	'userid' => $admin_info['admin_id'], 
+	'status' => 1,
+	'type' => 0 ,
+	'sign'=>'',
+	'pubtime'=>NV_CURRENTTIME,
+	'signtime'=>NV_CURRENTTIME,
+	'exptime'=>'',
+	'organid'=>$organid
 );
+
 /**
  * begin: post data 
  */
+ 
 if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 {
     $data['catid'] = $nv_Request->get_int( 'catid', 'post', 0 );
@@ -67,17 +127,34 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
     $hometext = $nv_Request->get_string( 'hometext', 'post', '' );
     $data['hometext'] = nv_nl2br( nv_htmlspecialchars( strip_tags( $hometext ) ), '<br />' );
     $data['filepath'] = $nv_Request->get_string( 'filepath', 'post','' );
-    $lu = strlen( NV_BASE_SITEURL . NV_UPLOADS_DIR . "/" . $module_name . "/" );
+    $lu = strlen( NV_BASE_SITEURL . NV_UPLOADS_DIR . "/" . $module_upload . "/" );
     $data['filepath'] = substr( $data['filepath'], $lu );
     $data['otherpath'] = $nv_Request->get_string( 'otherpath', 'post', '');
     $bodytext = $nv_Request->get_string( 'bodytext', 'post', '' );
     $data['bodytext'] = defined( 'NV_EDITOR' ) ? nv_nl2br( $bodytext, '' ) : nv_nl2br( nv_htmlspecialchars( strip_tags( $bodytext ) ), '<br />' );
     $data['sign'] = $nv_Request->get_string( 'sign', 'post', '' );
+    $pubtime = $nv_Request->get_string( 'pubtime', 'post', 0 );
     $signtime = $nv_Request->get_string( 'signtime', 'post', 0 );
+    $exptime = $nv_Request->get_string( 'exptime', 'post', 0 );
     $data['status'] = $nv_Request->get_int( 'status', 'post', 0 );
     $data['organid'] = $nv_Request->get_int( 'organid', 'post', 0);
     
-    if ( ! empty( $signtime ) and ! preg_match( "/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/", $signtime ) ) $signtime = "";
+	//pubtime
+    if ( ! empty( $pubtime ) and ! preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $pubtime ) ) $pubtime = '';
+    if ( empty( $pubtime ) )
+    {
+        $data['pubtime'] = 0;
+    }
+    else
+    {
+        $phour = date( 'H' );
+        $pmin = date( 'i' );
+        unset( $m );
+        preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $pubtime, $m );
+        $data['pubtime'] = mktime( $phour, $pmin, 0, $m[2], $m[1], $m[3] );
+    }
+	//signtime
+    if ( ! empty( $signtime ) and ! preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $signtime ) ) $signtime = '';
     if ( empty( $signtime ) )
     {
         $data['signtime'] = 0;
@@ -87,17 +164,41 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
         $phour = date( 'H' );
         $pmin = date( 'i' );
         unset( $m );
-        preg_match( "/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/", $signtime, $m );
+        preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $signtime, $m );
         $data['signtime'] = mktime( $phour, $pmin, 0, $m[2], $m[1], $m[3] );
     }
-    if ( empty( $data['title'] ) ) $error = $lang_module['content_title_erorr'];
+	
+	//exptime
+    if ( ! empty( $exptime ) and ! preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $exptime ) ) $exptime = '';
+    if ( empty( $exptime ) )
+    {
+        $data['exptime'] = 0;
+    }
     else
+    {
+        $phour = date( 'H' );
+        $pmin = date( 'i' );
+        unset( $m );
+        preg_match( '/^([0-9]{1,2})\\/([0-9]{1,2})\/([0-9]{4})$/', $exptime, $m );
+        $data['exptime'] = mktime( $phour, $pmin, 0, $m[2], $m[1], $m[3] );
+		// Thoi gian het han phai lon hon hoac bang thoi gian hieu luc
+		if( $data['exptime'] < $data['signtime'] ){
+			$data['exptime'] = 0;
+		}
+    }
+	
+	if (empty($data['title'])) {
+		$error[] = $lang_module['content_title_erorr'];
+	} elseif (empty($data['catid'])) {
+		$error[] = $lang_module['error_cat'];
+	}
+    if ( empty( $error ) )
     {
         if ( $id == 0 )
         {
             //insert data
 			$sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_rows
-				(catid, title, alias, hometext, bodytext, keywords, filepath,otherpath, roomid,fieldid, addtime, edittime, down, view, userid, status, type,sign,signtime,organid) VALUES
+				(catid, title, alias, hometext, bodytext, keywords, filepath,otherpath, roomid,fieldid, addtime, edittime, down, view, userid, status, type,sign,pubtime,signtime,exptime,organid) VALUES
 				 (' . intval( $data['catid'] ) . ',
 				 :title,
 				 :alias,
@@ -116,7 +217,9 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 				 ' . intval( $data['status'] ) . ',
 				 :type,
 				 :sign,
+				 :pubtime,
 				 :signtime,
+				 :exptime,
 				 :organid)';
 
 			$data_insert = array();
@@ -134,7 +237,9 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 			$data_insert['userid'] = $data['userid'];
 			$data_insert['type'] = $data['type'];
 			$data_insert['sign'] = $data['sign'];
+			$data_insert['pubtime'] = $data['pubtime'];
 			$data_insert['signtime'] = $data['signtime'];
+			$data_insert['exptime'] = $data['exptime'];
 			$data_insert['organid'] = $data['organid'];
 
 			$newid = $db->insert_id( $sql, 'id', $data_insert );
@@ -155,24 +260,26 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
         elseif ( $id > 0 )
         {
 			$sth = $db->prepare( 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET
-					 catid=' . intval( $data['catid'] ) . ',
-					 status=' . intval( $data['status'] ) . ',
-					 roomid=:roomid,
-					 fieldid=:fieldid,
-					 title=:title,
-					 alias=:alias,
-					 hometext=:hometext,
-					 bodytext=:bodytext,
-					 keywords=:keywords,
-					 filepath=:filepath,
-					 otherpath=:otherpath,
-					 edittime=' . NV_CURRENTTIME . ',
-					 type=:type,
-					 sign=:sign,
-					 status=:status,
-					 signtime=:signtime,
-					 organid=:organid
-				WHERE id =' . $id );
+				 catid=' . intval( $data['catid'] ) . ',
+				 status=' . intval( $data['status'] ) . ',
+				 roomid=:roomid,
+				 fieldid=:fieldid,
+				 title=:title,
+				 alias=:alias,
+				 hometext=:hometext,
+				 bodytext=:bodytext,
+				 keywords=:keywords,
+				 filepath=:filepath,
+				 otherpath=:otherpath,
+				 edittime=' . NV_CURRENTTIME . ',
+				 type=:type,
+				 sign=:sign,
+				 status=:status,
+				 pubtime=:pubtime,
+				 signtime=:signtime,
+				 exptime=:exptime,
+				 organid=:organid
+			WHERE id =' . $id );
 
 			$sth->bindParam( ':roomid', $data['roomid'], PDO::PARAM_STR );
 			$sth->bindParam( ':fieldid', $data['fieldid'], PDO::PARAM_STR );
@@ -186,7 +293,9 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 			$sth->bindParam( ':type', $data['type'], PDO::PARAM_STR );
 			$sth->bindParam( ':sign', $data['sign'], PDO::PARAM_STR );
 			$sth->bindParam( ':status', $data['status'], PDO::PARAM_STR );
+			$sth->bindParam( ':pubtime', $data['pubtime'], PDO::PARAM_STR );
 			$sth->bindParam( ':signtime', $data['signtime'], PDO::PARAM_STR );
+			$sth->bindParam( ':exptime', $data['exptime'], PDO::PARAM_STR );
 			$sth->bindParam( ':organid', $data['organid'], PDO::PARAM_STR );
             $sth->execute();
             nv_fix_catall_row ();
@@ -194,6 +303,13 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
             die();
         }
     }
+	else
+	{
+        $url = 'javascript: history.go(-1)';
+        $msg1 = implode('<br />', $error);
+        $msg2 = $lang_module['content_back'];
+        redirect($msg1, $msg2, $url, $module_data . '_bodyhtml', 'back');
+	}
 }
 /**
  * end: post data 
@@ -204,13 +320,20 @@ if ( $id > 0 )
     $result = $db->query( $sql );
     $data = $result->fetch();
     if ( ! empty( $data['bodytext'] ) ) $data['bodytext'] = nv_htmlspecialchars( $data['bodytext'] );
-    if ( ! empty( $data['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $data['filepath'] ) )
+    if ( ! empty( $data['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR . "/" . $module_upload . "/" . $data['filepath'] ) )
     {
-        $data['filepath'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . "/" . $module_name . "/" . $data['filepath'];
+        $data['filepath'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . "/" . $module_upload . "/" . $data['filepath'];
     }
 }
+//pubtime
+if ( $data['pubtime']==0 ) $data['pubtime'] ="";
+elseif ( $data['pubtime']>0 ) $data['pubtime'] =date("d/m/Y",$data['pubtime']);
+//signtime
 if ( $data['signtime']==0 ) $data['signtime'] ="";
 elseif ( $data['signtime']>0 ) $data['signtime'] =date("d/m/Y",$data['signtime']);
+//exptime
+if ( $data['exptime']==0 ) $data['exptime'] ="";
+elseif ( $data['exptime']>0 ) $data['exptime'] =date("d/m/Y",$data['exptime']);
 /**
  * begin: formview data 
  */
@@ -224,10 +347,10 @@ $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'MODULE_NAME', $module_name );
 $xtpl->assign( 'OP', $op );
 $xtpl->assign( 'DATA', $data );
-if ( ! empty( $error ) )
-{
-    $xtpl->assign( 'ERROR', $error );
-    $xtpl->parse( 'main.error' );
+
+if (! empty($error)) {
+    $xtpl->assign('error', implode('<br />', $error));
+    $xtpl->parse('main.error');
 }
 //view list cat
 foreach ( $global_array_cat as $catid_i => $array_value )
@@ -319,7 +442,7 @@ if ( empty( $data['alias'] ) )
 {
     $xtpl->parse( 'main.getalias' );
 }
-$xtpl->assign( 'CURRENT', NV_UPLOADS_DIR . '/' . $module_name . '/' . date( "Y_m" ) );
+$xtpl->assign( 'CURRENT', NV_UPLOADS_DIR . '/' . $module_upload . '/' . date( "Y_m" ) );
 if ( defined( 'NV_EDITOR' ) and function_exists( 'nv_aleditor' ) )
 {
     $edits = nv_aleditor( 'bodytext', '100%', '300px', $data['bodytext'] );
@@ -330,6 +453,8 @@ else
 }
 $xtpl->assign( 'edit_bodytext', $edits );
 
+$xtpl->assign('UPLOADS_DIR_USER', $uploads_dir_user);
+$xtpl->assign('UPLOAD_CURRENT', $currentpath);
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

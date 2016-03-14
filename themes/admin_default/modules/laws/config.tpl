@@ -17,13 +17,28 @@
 	  <tbody class="second">
 		<tr>
 			<td align="right"><strong>{LANG.config_view_num}</strong></td>
-			<td><input class="form-control" style="width: 50px" name="view_num" type="text" value="{DATA.view_num}"/></td>
+			<td>
+				<select class="form-control" name="view_num">
+					<!-- BEGIN: view_num -->
+					<option value="{VIEW_NUM.key}"{VIEW_NUM.selected}>{VIEW_NUM.title}</option>
+					<!-- END: view_num -->
+				</select>
+			</td>
 		</tr>
 	  </tbody>
 	  <tbody class="second">
 		<tr>
 			<td align="right"><strong>{LANG.config_who_upload}</strong></td>
 			<td>{who_upload}</td>
+		</tr>
+		<tr>
+			<td align="right"><strong>{LANG.structure_upload}</td>
+			<td>
+			<select class="form-control" name="structure_upload" id="structure_upload">
+				<!-- BEGIN: structure_upload -->
+				<option value="{STRUCTURE_UPLOAD.key}"{STRUCTURE_UPLOAD.selected}>{STRUCTURE_UPLOAD.title}</option>
+				<!-- END: structure_upload -->
+			</select></td>
 		</tr>
 	  </tbody>
 	  <tbody id="id_groups_view">

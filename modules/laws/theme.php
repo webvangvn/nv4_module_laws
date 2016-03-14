@@ -20,7 +20,7 @@ if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 function view_listcate ( $data_content = null, $html_pages = "" )
 {
-    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info;
+    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $global_archives_cat;
     $xtpl = new XTemplate( "main_catall.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
     $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
@@ -48,10 +48,32 @@ function view_listcate ( $data_content = null, $html_pages = "" )
                             $data_i['xfile'] = "file";
                         }
                     }
-                    $data_i['view'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=view/" . $data_i['alias'] . "-" . $data_i['id'];
+                    $data_i['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$data_i['catid']]['alias'] . '/' . $data_i['alias'] . '-' . $data_i['id'] . $global_config['rewrite_exturl'];
                     $data_i['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $data_i['alias'] . "-" . $data_i['id'];
-                    if ( $data_i['signtime'] > 0 ) $data_i['signtime'] = date( "d/m/Y", $data_i['signtime'] );
-                    else $data_i['signtime'] = "";
+                    
+					// Tinh trang hieu luc
+					if( !( $data_i['exptime'] > 0 ) ) {
+						if( date( "d/m/Y", $data_i['signtime'] ) >= date( "d/m/Y", NV_CURRENTTIME ) ){
+							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+						}
+						elseif( date( "d/m/Y", $data_i['signtime']) < date( "d/m/Y", NV_CURRENTTIME ) ){
+							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
+						}
+					}
+					elseif( $data_i['exptime'] > 0 ){
+						if( date( "d/m/Y", $data_i['exptime'] ) < date( "d/m/Y", NV_CURRENTTIME ) ){
+							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_exp'];
+						}
+						elseif( date( "d/m/Y", $data_i['exptime']) > date( "d/m/Y", NV_CURRENTTIME ) ){
+							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+						}
+					}
+					
+					if ( $data_i['pubtime'] > 0 ) $data_i['pubtime'] = date( "d/m/Y", $data_i['pubtime'] );
+					else $data_i['pubtime'] = "";
+					if ( $data_i['signtime'] > 0 ) $data_i['signtime'] = date( "d/m/Y", $data_i['signtime'] );
+					else $data_i['signtime'] = "";
+				
                     $xtpl->assign( 'ROW', $data_i );
                     $xtpl->parse( 'main.cat.loop' );
                 }
@@ -65,7 +87,7 @@ function view_listcate ( $data_content = null, $html_pages = "" )
 
 function view_listall ( $data_content = null, $html_pages = "" )
 {
-    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info;
+    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $global_archives_cat;
     $xtpl = new XTemplate( "main_listall.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
     $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
@@ -88,10 +110,31 @@ function view_listall ( $data_content = null, $html_pages = "" )
                     $row['xfile'] = "file";
                 }
             }
-            $row['view'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=view/" . $row['alias'] . "-" . $row['id'];
+            $row['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
             $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
-            if ( $row['signtime'] > 0 ) $row['signtime'] = date( "d/m/Y", $row['signtime'] );
-            else $row['signtime'] = "";
+			// Tinh trang hieu luc
+			if( !( $row['exptime'] > 0 ) ) {
+				if( date( "d/m/Y", $row['signtime'] ) >= date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+				}
+				elseif( date( "d/m/Y", $row['signtime']) < date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
+				}
+			}
+			elseif( $row['exptime'] > 0 ){
+				if( date( "d/m/Y", $row['exptime'] ) < date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_exp'];
+				}
+				elseif( date( "d/m/Y", $row['exptime']) > date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+				}
+			}
+			
+            if ( $row['pubtime'] > 0 ) $row['pubtime'] = date( "d/m/Y", $row['pubtime'] );
+            else $row['pubtime'] = "";
+			if ( $row['signtime'] > 0 ) $row['signtime'] = date( "d/m/Y", $row['signtime'] );
+			else $row['signtime'] = "";
+
             $xtpl->assign( 'ROW', $row );
             $xtpl->parse( 'main.loop' );
         }
@@ -125,6 +168,13 @@ function view_archives ( $data_content )
             $data_content['xfile'] = "file";
         }
     }
+	if(empty($data_content['hometext'])){
+		$data_content['hometext'] = $lang_module['doc_on_updating'];
+	}
+	if(empty($data_content['bodytext'])){
+		$data_content['bodytext'] = $lang_module['doc_on_updating'];
+	}
+	
     $xtpl->assign( 'DATA', $data_content );
     $xtpl->parse( 'main' );
     return $xtpl->text( 'main' );

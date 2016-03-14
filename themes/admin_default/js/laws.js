@@ -195,5 +195,16 @@ function formatItem(row) {
 
 //////
  
- 
+ $(document).ready(function(){
+	// Laws content
+	$("#select-file-post").click(function() {
+		var area = "filepath";
+		var alt = "doc_name";
+		var path = CFG.uploads_dir_user;
+		var currentpath = CFG.upload_current;
+		var type = "file";
+		nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&alt=" + alt + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+		return false;
+	});
+});
  

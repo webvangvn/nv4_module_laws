@@ -7,13 +7,8 @@
  * @Update to 4.x webvang (hoang.nguyen@webvang.vn)
  * @License GNU/GPL version 2 or any later version
  * @Createdate Fri, 29 May 2015 07:49:53 GMT
+**/
 
- if ( ! defined( 'NV_IS_ADMIN' ) ) {
- 
-				$nv_redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
-                redict_link ( 'ban khong co quyen han', '', $nv_redirect );
- };
-  */
 if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 check_upload();

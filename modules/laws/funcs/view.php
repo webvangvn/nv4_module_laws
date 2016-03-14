@@ -13,22 +13,12 @@ if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-
-$id = 0;
-if ( ! empty( $array_op[1] ) )
-{
-    $temp = explode( '-', $array_op[1] );
-    if ( ! empty( $temp ) )
-    {
-        $id = intval( end( $temp ) );
-    }
-}
-$sql = "SELECT * FROM " . NV_PREFIXLANG . "_" . $module_data . "_rows WHERE id = '" . $id . "' AND status=1 ";
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_rows WHERE id = ' . $id . ' AND status=1';
 $result = $db->query( $sql );
 $data_content = $result->fetch();
-if ( empty($data_content) ) die('stop!!');
+if ( empty($data_content) ) die('Stop!!!');
 
-$sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_rows SET view=view+1 WHERE id = '" . $id . "'";
+$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET view=view+1 WHERE id = ' . $id;
 $result = $db->query( $sql );
 
 if ( $data_content['signtime'] > 0 ) $data_content['signtime'] = date("d/m/Y",$data_content['signtime']);
@@ -45,7 +35,7 @@ $data_content['organ_link'] = isset($global_archives_organ[$data_content['organi
 $array_type = array( 
   0 => $lang_module['nonecontent'], 1 => $lang_module['incontent'], 2 => $lang_module['outcontent'] 
 );
-$data_content['linkdown'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $data_content['alias']."-".$data_content['id'];
+$data_content['linkdown'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=down/' . $data_content['alias'] . '-' . $data_content['id'];
 $data_content['type_title'] = $array_type[$data_content['type']];
 
 $catid = $data_content['catid'];

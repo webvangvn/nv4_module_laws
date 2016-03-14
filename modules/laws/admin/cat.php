@@ -19,10 +19,29 @@ $error = "";
 $parentid = $nv_Request->get_int( 'parentid', 'get', 0 );
 $catid = $nv_Request->get_int( 'catid', 'get,post', 0 );
 $data = array(
-	"catid"=>0, "parentid"=>0, "title"=>"", "alias"=>"", "description"=>"", "image"=>"", 
-	"thumbnail"=>"", "weight"=>0, "order"=>0, "lev"=>0, "viewcat"=>"viewcat_list", "numsubcat"=>0,
-    "subcatid"=>"", "inhome"=>1, "numlinks"=>3, "keywords"=>"", "admins"=>0, "add_time"=>NV_CURRENTTIME, 
-    "edit_time"=>NV_CURRENTTIME, "del_cache_time"=>0, "who_view"=>0, "groups_view"=>"","numrow"=>0
+	'catid'=>0,
+	'parentid'=>0,
+	'title'=>'',
+	'alias'=>'',
+	'description'=>'',
+	'image'=>'', 
+	'thumbnail'=>'',
+	'weight'=>0,
+	'order'=>0,
+	'lev'=>0,
+	'viewcat'=>'viewcat_list',
+	'numsubcat'=>0,
+	'subcatid'=>'',
+	'inhome'=>1,
+	'numlinks'=>3,
+	'keywords'=>'',
+	'admins'=>0,
+	'add_time'=>NV_CURRENTTIME, 
+	'edit_time'=>NV_CURRENTTIME,
+	'del_cache_time'=>0,
+	'who_view'=>0,
+	'groups_view'=>6,
+	'numrow'=>0
 );
 
 //post data
@@ -99,7 +118,6 @@ if ( $savecat == '1' )
 			$stmt->execute();
         	if ($stmt->rowCount())
 	        {
-				
 	        	if ( $data['parentid'] != $parentid_old )
 	        	{
 					$result= $db->query( "SELECT max(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid='" . $data['parentid'] . "'" );
@@ -247,7 +265,6 @@ if (!empty($groups_list))
 $xtpl->assign( 'hidediv', $data['who_view'] == 3 ? "visibility:visible" : "visibility:hidden" );
 $xtpl->assign( 'DATA', $data );
 $xtpl->parse( 'main.form' );
-
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

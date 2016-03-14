@@ -5,3 +5,8 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate Fri, 29 May 2015 07:49:53 GMT
  */
+ 
+img.ui-datepicker-trigger{
+	padding: 7px;
+	cursor: pointer
+}

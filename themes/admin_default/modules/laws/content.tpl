@@ -1,9 +1,6 @@
 <!-- BEGIN: main -->
 <!-- BEGIN: error -->
-<div class="quote" style="width:98%">
-    <blockquote class="error"><span>{ERROR}</span></blockquote>
-</div>
-<div class="clear"></div>
+<div class="alert alert-danger">{error}</div>
 <!-- END: error -->
 <link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.css" rel="stylesheet" />
 <link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.theme.css" rel="stylesheet" />
@@ -23,10 +20,10 @@
 				<tbody>
 					<tr>
 						<td><strong>{LANG.doc_name} </strong></td>
-						<td><input class="form-control" style="width:350px" name="title" type="text" value="{DATA.title}" maxlength="250" id="idtitle"/></td>
+						<td><input class="form-control" style="width:350px" name="title" type="text" value="{DATA.title}" maxlength="250" id="idtitle" required="required"/></td>
 					</tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td><strong>{LANG.alias} </strong></td>
 						<td>
@@ -39,6 +36,7 @@
 						<td><strong>{LANG.cat_parent} </strong></td>
 						<td>
 						<select class="form-control w200" name="catid">
+							<option value="">{LANG.sel_cat}</option>
 							<!-- BEGIN: catlist -->
 							<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
 							<!-- END: catlist -->
@@ -46,7 +44,7 @@
 						</td>
 					</tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td><strong>{LANG.typecontent} </strong></td>
 						<td>
@@ -67,7 +65,7 @@
 						</td>
 					</tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td><strong>{LANG.of_field} </strong></td>
 						<td>
@@ -86,10 +84,18 @@
 						<td><input class="form-control" style="width:350px" name="sign" type="text" value="{DATA.sign}" maxlength="250" />&nbsp; </td>
 					</tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
+					<tr>
+						<td><strong>{LANG.pubtime} </strong></td>
+						<td><input class="form-control" style="width:100px" name="pubtime" id="pubtime" type="text" value="{DATA.pubtime}" maxlength="10" /></td>
+					</tr>
 					<tr>
 						<td><strong>{LANG.signtime} </strong></td>
 						<td><input class="form-control" style="width:100px" name="signtime" id="signtime" type="text" value="{DATA.signtime}" maxlength="10" /></td>
+					</tr>
+					<tr>
+						<td><strong>{LANG.exptime} </strong></td>
+						<td><input class="form-control" style="width:100px" name="exptime" id="exptime" type="text" value="{DATA.exptime}" maxlength="10" /></td>
 					</tr>
 				</tbody>
 				<tbody>
@@ -109,7 +115,7 @@
 			<table class="table table-striped table-bordered table-hover">
 				<col class="w200" />
 				<col />
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td colspan="2"><strong>{LANG.pathfile} </strong> <em>({LANG.notepathfile})</em></td>
 					</tr>
@@ -119,11 +125,11 @@
 						<td><strong>{LANG.serverpathfile} </strong></td>
 						<td>
 						<input class="form-control w200" style="width:400px" type="text" name="filepath" id="filepath" value="{DATA.filepath}"/>
-						&nbsp;<input class="btn btn-primary" type="button" value="Browse server" name="selectfile"/>
+						&nbsp;<input id="select-file-post" class="btn btn-primary" type="button" value="Browse server" name="selectfile"/>
 						</td>
 					</tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td><strong>{LANG.otherpathfile} </strong></td>
 						<td>
@@ -135,9 +141,9 @@
 			<table class="table table-striped table-bordered table-hover">  
 				<col class="w200" />
 				<col />
-				<tbody class="second">
+				<tbody>
 					<tr><td>
-						<strong>{LANG.homtext} </strong>
+						<strong>{LANG.homtext}</strong>
 					</td></tr>
 				</tbody>
 				<tbody>
@@ -149,7 +155,7 @@
 			<table class="table table-striped table-bordered table-hover">    
 				<col class="w200" />
 				<col />
-				<tbody class="second">
+				<tbody>
 					<tr><td colspan="2">
 						<strong>{LANG.bodytext} </strong>
 					</td></tr>
@@ -159,7 +165,7 @@
 						{edit_bodytext}
 					</td></tr>
 				</tbody>
-				<tbody class="second">
+				<tbody>
 					<tr>
 						<td width="80"><strong>{LANG.keywords} </strong></td>
 						<td><input class="form-control" style="width: 99%" name="keywords" type="text" value="{DATA.keywords}" maxlength="250" /></td>
@@ -180,19 +186,17 @@
 	</div>
 </form>
 <script type="text/javascript">
+//<![CDATA[
+var LANG = [];
+var CFG = [];
+CFG.uploads_dir_user = "{UPLOADS_DIR_USER}";
+CFG.upload_current = "{UPLOAD_CURRENT}";
 <!-- BEGIN: getalias -->
 $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
-$("input[name=selectfile]").click(function(){
-	var area = "filepath";
-	var path= "{NV_UPLOADS_DIR}/{module_name}";	
-	var currentpath= "{CURRENT}";						
-	var type= "file";
-	nv_open_browse("{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}=upload&popup=1&area=" + area+"&path="+path+"&type="+type+"&currentpath="+currentpath, "NVImg", "850", "400","resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
-	return false;
-});
+//]]>
 </script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.menu.min.js"></script>
