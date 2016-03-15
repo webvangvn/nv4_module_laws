@@ -39,8 +39,8 @@ elseif ($ac=='delall')
 $page_title = $lang_module['main'];
 $catid = $nv_Request->get_int( 'catid', 'get', 0 );
 $roomid = $nv_Request->get_int( 'roomid', 'get', 0 );
-$per_page = $nv_Request->get_int( 'per_page', 'get', 5);
-$page = $nv_Request->get_int( 'page', 'get', 0 );
+$per_page = $nv_Request->get_int( 'per_page', 'get', 20);
+$page = $nv_Request->get_int( 'page', 'get', 1 );
 $q = $nv_Request->get_string( 'q', 'get', '', 1 );
 $ordername = $nv_Request->get_string( 'ordername', 'get', 'id' );
 $order = ( $nv_Request->get_string( 'order', 'get' ) == "desc" ) ? 'asc' : 'desc';
@@ -88,7 +88,7 @@ foreach ( $global_array_cat as $catid_i => $array_value )
     $xtpl->assign( 'CAT', $array_cat );
     $xtpl->parse( 'main.cloop' );
 }
-for ($i = 5; $i <= 30; ++$i) {
+for ($i = 5; $i <= 150; ++$i) {
     $xtpl->assign('PER_PAGE', array(
         'key' => $i,
         'title' => $i,
@@ -110,16 +110,15 @@ if ( !empty($where) )
 	$where_sql = ' WHERE ' . implode(' AND ', $where);
 }
 $ord_sql = 'ORDER BY ' . $ordername . ' ' . $order . '';
-$sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM ' . $table . ' '.$where_sql.' ' . $ord_sql . ' LIMIT ' . $page . ',' . $per_page;
-
+$sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM ' . $table . ' '.$where_sql.' ' . $ord_sql;
 $result = $db->query( $sql );
-
-$result_all = $db->query( "SELECT FOUND_ROWS()" );
 $numf  = $result->rowCount();
-//die($sql);
+
+$result_all = $db->query( 'SELECT * FROM ' . $table . ' ' . $where_sql . ' ' . $ord_sql . ' LIMIT ' . (($page - 1) * $per_page) . ',' . $per_page );
+
 $all_page = ( $numf ) ? $numf : 1;
 $i=1;
-while ( $row = $result->fetch() )
+while ( $row = $result_all->fetch() )
 {
 	$row['bg'] = ($i%2==0)? 'class=\'second\'':'';
 	$row['cat_title'] = isset( $global_array_cat[$row['catid']]['title'] ) ? $global_array_cat[$row['catid']]['title'] : '';
@@ -137,10 +136,10 @@ while ( $row = $result->fetch() )
 //end: listdata
 $base_url = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&per_page=' . $per_page . '&catid=' . $catid .'&q=' . $q . '&ordername='.$ordername.'&order=' . $order;
 $generate_page = nv_generate_page( $base_url, $all_page, $per_page, $page );
-if ( !empty($generate_page) ) 
-{
-	$xtpl->assign( 'generate_page', $generate_page );
-	$xtpl->parse( 'main.page' );
+
+if (!empty($generate_page)) {
+    $xtpl->assign('GENERATE_PAGE', $generate_page);
+    $xtpl->parse('main.generate_page');
 }
 
 $xtpl->parse( 'main' );

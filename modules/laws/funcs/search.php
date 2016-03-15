@@ -122,6 +122,8 @@ $all_page = ( $num_items ) ? $num_items : 1;
         $i ++;
     }
 }
+$page_title = $module_info['custom_title'];
+
 $html_pages = nv_archives_page2( $base_url, $all_page, $per_page, $page );
 $contents = call_user_func( "view_search", $data_content, $html_pages, $data_form );
 

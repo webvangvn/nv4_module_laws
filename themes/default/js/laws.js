@@ -10,7 +10,7 @@
  function search_submit_form(){
 	var catid = $("#catid").val();
 	var text = $("#otextseach").val();
-	window.location = nv_siteroot + "index.php?" + nv_lang_variable + '=' + nv_sitelang  + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=search&catid='+catid+'&q='+rawurlencode(text);
+	window.location = nv_base_siteurl + "index.php?" + nv_lang_variable + '=' + nv_lang_data  + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=search&catid='+catid+'&q='+rawurlencode(text);
 	return false;
 }
 function search_submit_form_adv(){
@@ -22,7 +22,7 @@ function search_submit_form_adv(){
 	var text = $("#otextseach").val();
 	var btime = $("#btime").val();
 	var etime = $("#etime").val();
-	window.location = nv_siteroot + "index.php?" + nv_lang_variable + '=' + nv_sitelang  + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=search&type='+type+'&catid='+catid+'&roomid='+roomid+'&fieldid='+fieldid+'&organid='+organid+'&btime='+btime+'&etime='+etime+'&q='+rawurlencode(text);
+	window.location = nv_base_siteurl + "index.php?" + nv_lang_variable + '=' + nv_lang_data  + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=search&type='+type+'&catid='+catid+'&roomid='+roomid+'&fieldid='+fieldid+'&organid='+organid+'&btime='+btime+'&etime='+etime+'&q='+rawurlencode(text);
 	return false;
 }
 //menu
@@ -34,7 +34,7 @@ function search_submit_form_adv(){
 //**2) Optimized script performance by caching header and content container references
 
 var ddaccordion={
-	ajaxloadingmsg: '<img src="loading2.gif" /><br />Loading Content...', //customize HTML to output while Ajax content is being fetched (if applicable)
+	ajaxloadingmsg: '<img src="' + nv_base_siteurl + 'assets/images/load_bar.gif" /><br />Loading Content...', //customize HTML to output while Ajax content is being fetched (if applicable)
 
 	headergroup: {}, //object to store corresponding header group based on headerclass value
 	contentgroup: {}, //object to store corresponding content group based on headerclass value

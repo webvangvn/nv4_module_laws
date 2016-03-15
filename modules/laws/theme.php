@@ -4,19 +4,12 @@
  * @Project NUKEVIET 4.x
  * @Author PCD-GROUP (contact@dinhpc.com)
  * @Copyright (C) 2015 PCD-GROUP. All rights reserved
- * @Update to 4.x webvang (hoang.nguyen@webvang.vn)
+ * @Upnv_date to 4.x webvang (hoang.nguyen@webvang.vn)
  * @License GNU/GPL version 2 or any later version
- * @Createdate Fri, 29 May 2015 07:49:53 GMT
+ * @Createnv_date Fri, 29 May 2015 07:49:53 GMT
  */
 
 if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
-
-/**
- * nv_theme_archives_main()
- * 
- * @param mixed $array_data
- * @return
- */
 
 function view_listcate ( $data_content = null, $html_pages = "" )
 {
@@ -32,49 +25,49 @@ function view_listcate ( $data_content = null, $html_pages = "" )
             if ( ! empty( $data_content_i['data'] ) )
             {
                 $xtpl->assign( 'CAT', $data_content_i['catinfo'] );
-                foreach ( $data_content_i['data'] as $data_i )
+                foreach ( $data_content_i['data'] as $row )
                 {
-                    $data_i['xfile'] = "download";
-                    if ( ! empty( $data_i['filepath'] ) )
+                    $row['xfile'] = "download";
+                    if ( ! empty( $row['filepath'] ) )
                     {
-                        $temp = explode( '.', $data_i['filepath'] );
+                        $temp = explode( '.', $row['filepath'] );
                         $xtemp = end( $temp );
                         if ( file_exists( NV_ROOTDIR . "/themes/" . $module_info['template'] . "/images/" . $module_file . "/" . $xtemp . ".png" ) )
                         {
-                            $data_i['xfile'] = $xtemp;
+                            $row['xfile'] = $xtemp;
                         }
                         else
                         {
-                            $data_i['xfile'] = "file";
+                            $row['xfile'] = "file";
                         }
                     }
-                    $data_i['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$data_i['catid']]['alias'] . '/' . $data_i['alias'] . '-' . $data_i['id'] . $global_config['rewrite_exturl'];
-                    $data_i['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $data_i['alias'] . "-" . $data_i['id'];
+                    $row['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
+                    $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
                     
 					// Tinh trang hieu luc
-					if( !( $data_i['exptime'] > 0 ) ) {
-						if( date( "d/m/Y", $data_i['signtime'] ) >= date( "d/m/Y", NV_CURRENTTIME ) ){
-							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+					if( !( $row['exptime'] > 0 ) ) {
+						if( nv_date( "d/m/Y", $row['signtime'] ) <= nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+							$row['doc_status'] = $lang_module['doc_sign'];
 						}
-						elseif( date( "d/m/Y", $data_i['signtime']) < date( "d/m/Y", NV_CURRENTTIME ) ){
-							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
+						elseif( nv_date( "d/m/Y", $row['signtime']) > nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+							$row['doc_status'] = nv_date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
 						}
 					}
-					elseif( $data_i['exptime'] > 0 ){
-						if( date( "d/m/Y", $data_i['exptime'] ) < date( "d/m/Y", NV_CURRENTTIME ) ){
-							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_exp'];
+					elseif( intval($row['exptime']) > 0 ){
+						if( nv_date( "d/m/Y", $row['exptime'] ) < nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+							$row['doc_status'] = nv_date( "d/m/Y", $row['exptime'] ) . '<br/>' . $lang_module['doc_exp'];
 						}
-						elseif( date( "d/m/Y", $data_i['exptime']) > date( "d/m/Y", NV_CURRENTTIME ) ){
-							$data_i['doc_status'] = date( "d/m/Y", $data_i['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+						elseif( nv_date( "d/m/Y", $row['exptime']) > nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+							$row['doc_status'] = nv_date( "d/m/Y", $row['exptime'] ) . '<br/>' . $lang_module['doc_sign'];
 						}
 					}
 					
-					if ( $data_i['pubtime'] > 0 ) $data_i['pubtime'] = date( "d/m/Y", $data_i['pubtime'] );
-					else $data_i['pubtime'] = "";
-					if ( $data_i['signtime'] > 0 ) $data_i['signtime'] = date( "d/m/Y", $data_i['signtime'] );
-					else $data_i['signtime'] = "";
+					if ( $row['pubtime'] > 0 ) $row['pubtime'] = nv_date( "d/m/Y", $row['pubtime'] );
+					else $row['pubtime'] = "";
+					if ( $row['signtime'] > 0 ) $row['signtime'] = nv_date( "d/m/Y", $row['signtime'] );
+					else $row['signtime'] = "";
 				
-                    $xtpl->assign( 'ROW', $data_i );
+                    $xtpl->assign( 'ROW', $row );
                     $xtpl->parse( 'main.cat.loop' );
                 }
                 $xtpl->parse( 'main.cat' );
@@ -96,6 +89,10 @@ function view_listall ( $data_content = null, $html_pages = "" )
     {
         foreach ( $data_content as $row )
         {
+			if(empty($row['hometext'])){
+				$row['hometext'] = $lang_module['doc_on_updating'];
+			}
+
             $row['xfile'] = "download";
             if ( ! empty( $row['filepath'] ) )
             {
@@ -114,25 +111,25 @@ function view_listall ( $data_content = null, $html_pages = "" )
             $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
 			// Tinh trang hieu luc
 			if( !( $row['exptime'] > 0 ) ) {
-				if( date( "d/m/Y", $row['signtime'] ) >= date( "d/m/Y", NV_CURRENTTIME ) ){
-					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+				if( nv_date( "d/m/Y", $row['signtime'] ) <= nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = $lang_module['doc_sign'];
 				}
-				elseif( date( "d/m/Y", $row['signtime']) < date( "d/m/Y", NV_CURRENTTIME ) ){
-					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
+				elseif( nv_date( "d/m/Y", $row['signtime']) > nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = nv_date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_pending'];
 				}
 			}
 			elseif( $row['exptime'] > 0 ){
-				if( date( "d/m/Y", $row['exptime'] ) < date( "d/m/Y", NV_CURRENTTIME ) ){
-					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_exp'];
+				if( nv_date( "d/m/Y", $row['exptime'] ) < nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = nv_date( "d/m/Y", $row['exptime'] ) . '<br/>' . $lang_module['doc_exp'];
 				}
-				elseif( date( "d/m/Y", $row['exptime']) > date( "d/m/Y", NV_CURRENTTIME ) ){
-					$row['doc_status'] = date( "d/m/Y", $row['signtime'] ) . '<br/>' . $lang_module['doc_sign'];
+				elseif( nv_date( "d/m/Y", $row['exptime']) > nv_date( "d/m/Y", NV_CURRENTTIME ) ){
+					$row['doc_status'] = nv_date( "d/m/Y", $row['exptime'] ) . '<br/>' . $lang_module['doc_sign'];
 				}
 			}
 			
-            if ( $row['pubtime'] > 0 ) $row['pubtime'] = date( "d/m/Y", $row['pubtime'] );
+            if ( $row['pubtime'] > 0 ) $row['pubtime'] = nv_date( "d/m/Y", $row['pubtime'] );
             else $row['pubtime'] = "";
-			if ( $row['signtime'] > 0 ) $row['signtime'] = date( "d/m/Y", $row['signtime'] );
+			if ( $row['signtime'] > 0 ) $row['signtime'] = nv_date( "d/m/Y", $row['signtime'] );
 			else $row['signtime'] = "";
 
             $xtpl->assign( 'ROW', $row );
@@ -175,19 +172,59 @@ function view_archives ( $data_content )
 		$data_content['bodytext'] = $lang_module['doc_on_updating'];
 	}
 	
+	if(!empty($data_content['pubtime'])){
+		$data_content['pubtime'] = nv_date('d/m/Y', $data_content['pubtime']);
+	}
+	if(!empty($data_content['exptime'])){
+		$data_content['exptime'] = nv_date('d/m/Y', $data_content['exptime']);
+	}
+	
     $xtpl->assign( 'DATA', $data_content );
+	
+	if(!empty($data_content['exptime'])){
+		$xtpl->parse( 'main.exptime' );
+	}
+	
+	if(!empty($data_content['sign'])){
+		$xtpl->parse( 'main.sign' );
+	}
+	if(!empty($data_content['cat_link'])){
+		$xtpl->parse( 'main.cat_link' );
+	}
+	else{
+		$xtpl->parse( 'main.cat_updating' );
+	}
+	if(!empty($data_content['room_link'])){
+		$xtpl->parse( 'main.room_link' );
+	}
+	else{
+		$xtpl->parse( 'main.room_updating' );
+	}
+	if(!empty($data_content['field_link'])){
+		$xtpl->parse( 'main.field_link' );
+	}
+	else{
+		$xtpl->parse( 'main.field_updating' );
+	}
+	if(!empty($data_content['organ_link'])){
+		$xtpl->parse( 'main.organ_link' );
+	}
+	else{
+		$xtpl->parse( 'main.organ_updating' );
+	}
+
     $xtpl->parse( 'main' );
     return $xtpl->text( 'main' );
 }
 
-function viewcat_list ( $data_content = null, $top_contents = "", $html_pages = "" )
+function viewcat_list ( $data_content = null, $html_pages = "" )
 {
-    return $top_contents . view_listall( $data_content, $html_pages );
+    return view_listall( $data_content, $html_pages );
 }
 
-function viewcat_gird ( $data_content = null, $top_contents = "", $html_pages = "" )
+function viewcat_gird ( $data_content = null, $html_pages = "" )
 {
-    return $top_contents . view_listall( $data_content, $html_pages );
+    return view_listall( $data_content, $html_pages );
 }
 
 function view_search ( $data_content = null, $html_pages = "", $data_form )
@@ -304,6 +341,7 @@ function upload_content ( $data, $error )
         $xtpl->assign( 'ROW', $catinfo );
         $xtpl->parse( 'main.catlist' );
     }
+	
     foreach ( $global_archives_room as $roomid => $roominfo )
     {
         $xtitle = "";

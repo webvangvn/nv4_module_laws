@@ -14,7 +14,7 @@ if ( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
 define( 'NV_IS_MOD_ARCHIVES', true );
 
 global $global_archives_cat, $global_archives_room, $global_archives_field, $global_archives_organ;
-$global_archives_field = $global_archives_organ = array();
+$global_archives_field = $global_archives_organ = $global_archives_room = array();
 $page = 1;
 
 $global_archives_cat = array();

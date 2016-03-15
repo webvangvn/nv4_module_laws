@@ -10,7 +10,6 @@
  */
 
 if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
-$page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
 
 $base_url = NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '/' . $global_archives_cat[$catid]['alias'] . '-' . $catid;
@@ -39,25 +38,11 @@ while ( $row = $result->fetch() )
     $data_content[] = $row;
     $i ++;
 }
-$top_contents = '';
-if ( $global_archives_cat[$catid]['parentid'] > 0 )
-{
-    $parentid_i = $global_archives_cat[$catid]['parentid'];
-    $array_cat_title = array();
-    while ( $parentid_i > 0 )
-    {
-        $array_cat_title[] = $cur_link = "<a href=\"".$global_archives_cat[$parentid_i]['link']."\">" . $global_archives_cat[$parentid_i]['title'] . "</a>";
-        $parentid_i = $global_archives_cat[$parentid_i]['parentid'];
-    }
-    sort( $array_cat_title, SORT_NUMERIC );
-    $top_contents = implode( " -> ", $array_cat_title );
-}
-$lik = ( empty($top_contents) )? "": " - ";
-$cur_link = "<a href=\"".$global_archives_cat[$catid]['link']."\">" . $global_archives_cat[$catid]['title'] . "</a>";
-$top_contents = "<div class=\"archives_links\">".$top_contents.$lik.$cur_link."</div>";
+
+$page_title = isset($global_archives_cat[$catid]['title']) ? $global_archives_cat[$catid]['title'] : $module_info['custom_title'];
 
 $html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
-$contents = call_user_func( $global_archives_cat[$catid]['viewcat'], $data_content, $top_contents ,$html_pages );
+$contents = call_user_func( $global_archives_cat[$catid]['viewcat'], $data_content, $html_pages );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );

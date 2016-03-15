@@ -19,7 +19,7 @@
     <tbody>
     	<tr>
         	<td align="center">{ROW.no}</td>
-            <td><a href="{ROW.view}"><h4>{ROW.title}</h4></a><em>({LANG.pubtime}: {ROW.pubtime})</em></td>
+            <td><a href="{ROW.view}"><h4>{ROW.title}</h4></a><em>({LANG.pubtime_title}: {ROW.pubtime})</em></td>
             <td><p align="justify">{ROW.hometext}</p></td>
             <td>{ROW.signtime}</td>
             <td align="center">{ROW.doc_status}</td>

@@ -71,11 +71,16 @@
 					<span class="btn btn-danger"><a style="color: white; font-weight: bold" href="#" class="delall">{LANG.del_select}</a></span>&nbsp;
 					<span class="btn btn-primary"><a style="color: white; font-weight: bold" href="{ADDCONTENT}">{LANG.addcontent}</a></span>
 				</td>
-				<td colspan="5" align="right"><!-- BEGIN: page -->{generate_page}<!-- END: page --></td>
 			</tr>
 		</tfoot>
 	</table>
 </form>
+<!-- BEGIN: generate_page -->
+<div class="text-center">
+	{GENERATE_PAGE}
+</div>
+<!-- END: generate_page -->
+
 <script type="text/javascript">
 	clickcheckall();
 	delete_one('adel','{LANG.del_confim}','{URLBACK}');

@@ -56,25 +56,9 @@ while ( $row = $result->fetch() )
     $data_content[] = $row;
     $i ++;
 }
-$top_contents = "";
-if ( $global_archives_organ[$organid]['parentid'] > 0 )
-{
-    $parentid_i = $global_archives_organ[$organid]['parentid'];
-    $array_organ_title = array();
-    while ( $parentid_i > 0 )
-    {
-        $array_organ_title[] = $cur_link = "<a href=\"".$global_archives_organ[$parentid_i]['link']."\">" . $global_archives_organ[$parentid_i]['title'] . "</a>";
-        $parentid_i = $global_archives_organ[$parentid_i]['parentid'];
-    }
-    sort( $array_organ_title, SORT_NUMERIC );
-    $top_contents = implode( " -> ", $array_organ_title );
-}
-$lik = ( empty($top_contents) )? "": " - ";
-$cur_link = "<a href=\"".$global_archives_organ[$organid]['link']."\">" . $global_archives_organ[$organid]['title'] . "</a>";
-$top_contents = "<div class=\"archives_links\">".$top_contents.$lik.$cur_link."</div>";
 
 $html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
-$contents = viewcat_list( $data_content, $top_contents ,$html_pages );
+$contents = viewcat_list( $data_content, $html_pages );
 
 include ( NV_ROOTDIR . "/includes/header.php" );
 echo nv_site_theme( $contents );
