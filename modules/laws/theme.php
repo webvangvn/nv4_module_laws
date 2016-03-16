@@ -80,11 +80,16 @@ function view_listcate ( $data_content = null, $html_pages = "" )
 
 function view_listall ( $data_content = null, $html_pages = "" )
 {
-    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $global_archives_cat;
+    global $global_config, $module_name, $module_file, $lang_module, $module_config, $module_info, $global_archives_cat, $catid;
     $xtpl = new XTemplate( "main_listall.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
     $xtpl->assign( 'LANG', $lang_module );
     $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
     $xtpl->assign( 'TEMPLATE', $module_info['template'] );
+	if(isset($catid) AND $catid > 0){
+		$xtpl->assign( 'CAT', $global_archives_cat[$catid] );
+	}
+    $xtpl->assign( 'NO_DOCS', $lang_module['no_docs'] );
+	
     if ( ! empty( $data_content ) )
     {
         foreach ( $data_content as $row )
@@ -133,13 +138,45 @@ function view_listall ( $data_content = null, $html_pages = "" )
 			else $row['signtime'] = "";
 
             $xtpl->assign( 'ROW', $row );
-            $xtpl->parse( 'main.loop' );
+            $xtpl->parse( 'main.list_docs.loop' );
         }
+		//Subcat
+		if(isset($catid) AND $catid > 0){
+			$sub_id = $global_archives_cat[$catid]['subcatid'];
+			if ($sub_id != '') {
+				$_arr_subcat = explode(',', $sub_id);
+				$limit = 0;
+				foreach ($_arr_subcat as $catid_i) {
+					if ($global_archives_cat[$catid_i]['inhome'] == 1) {
+						$xtpl->assign('SUBCAT', $global_archives_cat[$catid_i]);
+						$xtpl->parse('main.list_docs.listcat.subcatloop');
+						$limit++;
+					}
+					if ($limit >= 3) {
+						$more = array(
+							'title' => $lang_module['more'],
+							'link' => $global_archives_cat[$catid]['link']
+						);
+						$xtpl->assign('MORE', $more);
+						$xtpl->parse('main.list_docs.listcat.subcatmore');
+						break;
+					}
+				}
+				$xtpl->parse('main.list_docs.listcat');
+			}
+		}
+		if ( ! empty( $html_pages ) )
+		{
+			$xtpl->assign( 'htmlpage', $html_pages );
+			$xtpl->parse( 'main.list_docs.htmlpage' );
+		}
+		$xtpl->parse( 'main.list_docs' );
     }
-    if ( ! empty( $html_pages ) )
-    {
-        $xtpl->assign( 'htmlpage', $html_pages );
-    }
+	else{
+		$xtpl->parse( 'main.no_data' );
+	}
+	
+	
     $xtpl->parse( 'main' );
     return $xtpl->text( 'main' );
 }

@@ -71,3 +71,5 @@ $lang_module['doc_sign'] = 'Hiệu lực';
 $lang_module['doc_pending'] = 'Chưa có hiệu lực';
 
 $lang_module['doc_on_updating'] = 'Đang được cập nhật';
+$lang_module['no_docs'] = 'Chưa có văn bản thuộc mục này';
+$lang_module['nocatpage'] = 'Lỗi không có chủ đề';

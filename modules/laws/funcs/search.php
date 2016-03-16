@@ -124,7 +124,7 @@ $all_page = ( $num_items ) ? $num_items : 1;
 }
 $page_title = $module_info['custom_title'];
 
-$html_pages = nv_archives_page2( $base_url, $all_page, $per_page, $page );
+$html_pages = nv_generate_page( $base_url, $all_page, $per_page, $page );
 $contents = call_user_func( "view_search", $data_content, $html_pages, $data_form );
 
 include NV_ROOTDIR . '/includes/header.php';

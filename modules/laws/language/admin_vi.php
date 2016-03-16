@@ -159,3 +159,4 @@ $lang_module['who_view0']='Tất cả';
 $lang_module['who_view1']='Thành viên';
 $lang_module['who_view2']='Quản trị';
 $lang_module['who_view3']='Nhóm Thành viên';
+$lang_module['nocatpage'] = 'Lỗi không có chủ đề';

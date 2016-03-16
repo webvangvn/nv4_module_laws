@@ -13,7 +13,15 @@ if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-$base_url = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
+
+$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+$base_url_rewrite = nv_url_rewrite($base_url, true);
+$page_url_rewrite = ($page > 1) ? nv_url_rewrite($base_url . '/page-' . $page, true) : $base_url_rewrite;
+$request_uri = $_SERVER['REQUEST_URI'];
+if (! ($home or $request_uri == $base_url_rewrite or $request_uri == $page_url_rewrite or NV_MAIN_DOMAIN . $request_uri == $base_url_rewrite or NV_MAIN_DOMAIN . $request_uri == $page_url_rewrite)) {
+    $redirect = '<meta http-equiv="Refresh" content="3;URL=' . $base_url_rewrite . '" />';
+    nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['error_404_content'] . $redirect, 404);
+}
 if ( $data_config['view_type'] == "view_listall")
 {
 	$order_by = 'addtime DESC';
@@ -27,8 +35,6 @@ if ( $data_config['view_type'] == "view_listall")
 			->limit( $per_page )
 			->offset( ( $page - 1 ) * $per_page );
 	$result = $db->query( $db->sql() );
-	$all_page = ( $num_items ) ? $num_items : 1;
-	
 	$data_content = array();
 	$i = 1;
 	while( $row = $result->fetch() )
@@ -38,7 +44,7 @@ if ( $data_config['view_type'] == "view_listall")
 		$i ++;
 	}
 
-	$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );	
+	$html_pages = nv_alias_page($page_title, $base_url, $num_items, $per_page, $page);
 	$contents = call_user_func( $data_config['view_type'],$data_content,$html_pages);
 }
 elseif ( $data_config['view_type'] == "view_listcate") 

@@ -57,7 +57,7 @@ while ( $row = $result->fetch() )
     $i ++;
 }
 
-$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
+$html_pages = nv_generate_page( $base_url, $all_page, $per_page, $page );
 $contents = viewcat_list( $data_content, $html_pages );
 
 include ( NV_ROOTDIR . "/includes/header.php" );
