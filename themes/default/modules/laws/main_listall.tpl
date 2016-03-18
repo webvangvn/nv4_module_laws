@@ -15,7 +15,7 @@
 	</div>
 	<!-- END: listcat -->
 	<div class="row">
-		<table class="archives_list">
+		<table class="table archives_list">
 			<thead>
 				<tr>
 					<td class="w100">{LANG.no}</td>

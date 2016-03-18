@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<table class="archives_list">
+<table class="table archives_list">
 	<thead>
     	<tr>
         	<td class="w100">{LANG.no}</td>
@@ -11,9 +11,19 @@
     </thead>
     <!-- BEGIN: cat -->
     <tbody class="maincat">
-    	<tr>
-        	<td colspan="5"><a href="{CAT.link}"><strong>{CAT.title}</strong></a></td>
-        </tr>
+    	<tr class="info">
+			<td colspan="5">
+				<ul class="list-inline sub-list-icon" style="margin: 0">
+					<li><h3><a title="{CAT.title}" href="{CAT.link}"><span>{CAT.title}</span></a></h3></li>
+					<!-- BEGIN: subcatloop -->
+					<li class="hidden-xs"><h4><a class="dimgray" title="{SUBCAT.title}" href="{SUBCAT.link}">{SUBCAT.title}</a></h4></li>
+					<!-- END: subcatloop -->
+					<!-- BEGIN: subcatmore -->
+					<a class="dimgray pull-right hidden-xs" title="{MORE.title}" href="{MORE.link}"><em class="fa fa-sign-out">&nbsp;</em></a>
+					<!-- END: subcatmore -->
+				</ul>
+			</td>
+		</tr>
     </tbody>
     <!-- BEGIN: loop -->
     <tbody>
@@ -27,11 +37,6 @@
     </tbody>
     <!-- END: loop -->
     <!-- END: cat -->
-    <thead>
-    	<tr>
-        	<td align="right" colspan="5">{htmlpage}</td>
-        </tr>
-    </thead>
 </table>
 <!-- END: main -->
 

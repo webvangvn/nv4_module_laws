@@ -31,17 +31,6 @@ $db->sqlreset()
 	->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
 	->where( 'catid = ' . $catid . ' AND status= 1' );
 
-// if(!empty($global_archives_cat[$catid]['subcatid'])){
-	// $where_comb = $global_archives_cat[$catid]['subcatid'] . ',' . $catid;
-// }
-// else{
-	// $where_comb = $catid;
-// }
-// $db->sqlreset()
-	// ->select( 'COUNT(*)' )
-	// ->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
-	// ->where( 'catid IN (' . $where_comb . ') AND status= 1' );
-
 $num_items = $db->query( $db->sql() )->fetchColumn();
 $db->select( '*' )
 		->order( $order_by )
@@ -52,6 +41,7 @@ $result = $db->query( $db->sql() );
 
 $data_content = array();
 $i = 1;
+if ($page > 1) $i = 1 + (( $page - 1 ) * $per_page);
 while ( $row = $result->fetch() )
 {
     $row['no'] = $i;

@@ -192,6 +192,9 @@ if ( $nv_Request->get_int( 'save', 'post' ) == 1 )
 	} elseif (empty($data['catid'])) {
 		$error[] = $lang_module['error_cat'];
 	}
+	elseif ( empty($data['filepath']) AND empty($data['otherpath']) ){
+		$error[] = $lang_module['error_file'];
+	}
     if ( empty( $error ) )
     {
         if ( $id == 0 )

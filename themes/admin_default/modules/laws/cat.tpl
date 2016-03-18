@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+
 <div class="table-responsive">
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
@@ -65,7 +68,7 @@
 				<tr>
 					<td><strong>{LANG.cat_parent}: </strong></td>
 					<td>
-					<select class="form-control" name="parentid">
+					<select id="sel-cat" class="form-control" name="parentid">
 						<option value="0" {ROW.select}>{LANG.parent_main}</option>
 						<!-- BEGIN: catlist -->
 						<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
@@ -113,107 +116,60 @@ $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
-show_group();
+$(document).ready(function() {
+	$("#sel-cat").select2();
+});
 </script>
 <!-- END: form -->
 <!-- END: main -->
 
 <!-- BEGIN: catdel -->
 <!-- BEGIN: subcat -->
-<table class="tab1" style="margin-bottom:2px">
-    <tbody>
-    	<tr>
-        	<td align="center">{TITLE}</td>
-        </tr>
-    </tbody>
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	<input class="form-control" type="button" value="{LANG.viewsubcat}" onclick="window.location='{PURL}'" />
-            </td>
-        </tr>
-    </tbody>
-</table>    
+<div class="text-center">
+	<p align="center">{TITLE}</p>
+	<input class="form-control" type="button" value="{LANG.viewsubcat}" onclick="window.location='{PURL}'" />
+</div>    
 <!-- END: subcat-->
 <!-- BEGIN: nonecat -->
-<table class="table table-striped table-bordered table-hover">
-    <tbody>
-    	<tr>
-        	<td align="center">{TITLE}</td>
-        </tr>
-    </tbody>
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	<form action="" method="post">
-                <input class="form-control" type="hidden" name="del" value="1" />
-            	<input class="form-control" type="submit" value="{LANG.del_ok}"/>
-                <input class="form-control" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>    
+<div class="text-center">
+	<p align="center">{TITLE}</p>
+	<form action="" method="post">
+	<input class="form-control" type="hidden" name="del" value="1" />
+	<input class="form-control" type="submit" value="{LANG.del_ok}"/>
+	<input class="form-control" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
+</div>    
 <!-- END: nonecat-->
 <!-- BEGIN: havecat -->
-<table class="table table-striped table-bordered table-hover" >
-    <tbody>
-    	<tr>
-        	<td align="center">{TITLE}</td>
-        </tr>
-    </tbody>
-</table>
-<table class="table table-striped table-bordered table-hover">
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	{TITLE1}
-            </td>
-        </tr>
-    </tbody>
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	<form action="" method="post">
-                <input class="form-control" type="hidden" name="delcatall" value="1" />
-            	<input class="form-control" type="submit" value="{LANG.del_ok}"/>
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>  
-<table class="table table-striped table-bordered table-hover">
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	{TITLE2}
-            </td>
-        </tr>
-    </tbody>
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	<form action="" method="post">
-                <input class="form-control" type="hidden" name="delcatmove" value="1" />
-            	<select name="catid">
-					<!-- BEGIN: catlist -->
-					<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
-					<!-- END: catlist -->
-				</select>
-                <input class="form-control" type="submit" value="{LANG.del_ok}"/>
-                </form>
-            </td>
-        </tr>
-    </tbody>
-</table>  
-<table class="table table-striped table-bordered table-hover">
-    <tbody class="second">
-    	<tr>
-        	<td align="center">
-            	<input class="form-control" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
-            </td>
-        </tr>
-    </tbody>
-</table>      
+<p align="center"><strong>{TITLE}</strong></p>
+
+<div class="well text-center">
+	<p align="center">{TITLE1}</p>
+	<br/>
+	<form action="" method="post">
+	<input class="form-control" type="hidden" name="delcatall" value="1" />
+	<input class="btn btn-primary" type="submit" value="{LANG.del_ok}"/>
+	</form>
+</div>  
+	<br/>
+	<br/>
+
+<div class="well text-center">
+	<p align="center">{TITLE2}</p>
+	<br/>
+	<form action="" method="post">
+	<input class="form-control" type="hidden" name="delcatmove" value="1" />
+	<select class="form-control w300 text-center" name="catid" style="display: inline-block">
+		<!-- BEGIN: catlist -->
+		<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
+		<!-- END: catlist -->
+	</select>
+	<br/>
+	<br/>
+	<input class="btn btn-primary" type="submit" value="{LANG.move_and_del}"/>
+	</form>
+</div>  
+<div class="text-center">
+	<input class="btn btn-warning w200 center-block" type="button" value="{LANG.no}" onclick="window.location='{PURL}'" />
+</div>
 <!-- END: havecat-->
 <!-- END: catdel -->

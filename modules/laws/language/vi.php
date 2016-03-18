@@ -65,11 +65,13 @@ $lang_module['organ_main'] = 'Không thuộc cơ quan ban hành nào';
 $lang_module['upload_ok'] = 'Dữ liệu của bạn đã được ghi thành công';
 $lang_module['upload_view'] = 'Click vào đây để quay về trang chủ';
 
-$lang_module['doc_status'] = 'Thời hiệu';
+$lang_module['doc_status'] = 'Tình trạng';
 $lang_module['doc_exp'] = 'Hết hiệu lực';
 $lang_module['doc_sign'] = 'Hiệu lực';
 $lang_module['doc_pending'] = 'Chưa có hiệu lực';
 
-$lang_module['doc_on_updating'] = 'Đang được cập nhật';
+$lang_module['doc_on_updating'] = 'Nội dung đang được cập nhật';
 $lang_module['no_docs'] = 'Chưa có văn bản thuộc mục này';
 $lang_module['nocatpage'] = 'Lỗi không có chủ đề';
+$lang_module['doc_no_file_title'] = 'File không còn tồn tại';
+$lang_module['doc_no_file'] = 'Vui lòng liên hệ với quản trị trang để được hỗ trợ.';

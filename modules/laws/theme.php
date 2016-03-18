@@ -25,8 +25,34 @@ function view_listcate ( $data_content = null, $html_pages = "" )
             if ( ! empty( $data_content_i['data'] ) )
             {
                 $xtpl->assign( 'CAT', $data_content_i['catinfo'] );
+				
+				$sub_id = $global_archives_cat[$data_content_i['catinfo']['catid']]['subcatid'];
+				if ($sub_id != '') {
+					$_arr_subcat = explode(',', $sub_id);
+					$limit = 0;
+					foreach ($_arr_subcat as $catid_i) {
+						if ($global_archives_cat[$catid_i]['inhome'] == 1) {
+							$xtpl->assign('SUBCAT', $global_archives_cat[$catid_i]);
+							$xtpl->parse('main.cat.subcatloop');
+							$limit++;
+						}
+						if ($limit >= 3) {
+							$more = array(
+								'title' => $lang_module['more'],
+								'link' => $global_archives_cat[$catid]['link']
+							);
+							$xtpl->assign('MORE', $more);
+							$xtpl->parse('main.cat.subcatmore');
+							break;
+						}
+					}
+				}
+				
                 foreach ( $data_content_i['data'] as $row )
                 {
+					if(empty($row['hometext'])){
+						$row['hometext'] = $lang_module['doc_on_updating'];
+					}
                     $row['xfile'] = "download";
                     if ( ! empty( $row['filepath'] ) )
                     {
@@ -42,7 +68,7 @@ function view_listcate ( $data_content = null, $html_pages = "" )
                         }
                     }
                     $row['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
-                    $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
+                    // $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
                     
 					// Tinh trang hieu luc
 					if( !( $row['exptime'] > 0 ) ) {
@@ -85,11 +111,8 @@ function view_listall ( $data_content = null, $html_pages = "" )
     $xtpl->assign( 'LANG', $lang_module );
     $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
     $xtpl->assign( 'TEMPLATE', $module_info['template'] );
-	if(isset($catid) AND $catid > 0){
-		$xtpl->assign( 'CAT', $global_archives_cat[$catid] );
-	}
     $xtpl->assign( 'NO_DOCS', $lang_module['no_docs'] );
-	
+
     if ( ! empty( $data_content ) )
     {
         foreach ( $data_content as $row )
@@ -113,7 +136,7 @@ function view_listall ( $data_content = null, $html_pages = "" )
                 }
             }
             $row['view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
-            $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
+            // $row['down'] = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=down/" . $row['alias'] . "-" . $row['id'];
 			// Tinh trang hieu luc
 			if( !( $row['exptime'] > 0 ) ) {
 				if( nv_date( "d/m/Y", $row['signtime'] ) <= nv_date( "d/m/Y", NV_CURRENTTIME ) ){
@@ -142,6 +165,7 @@ function view_listall ( $data_content = null, $html_pages = "" )
         }
 		//Subcat
 		if(isset($catid) AND $catid > 0){
+			$xtpl->assign( 'CAT', $global_archives_cat[$catid] );
 			$sub_id = $global_archives_cat[$catid]['subcatid'];
 			if ($sub_id != '') {
 				$_arr_subcat = explode(',', $sub_id);
@@ -176,7 +200,6 @@ function view_listall ( $data_content = null, $html_pages = "" )
 		$xtpl->parse( 'main.no_data' );
 	}
 	
-	
     $xtpl->parse( 'main' );
     return $xtpl->text( 'main' );
 }
@@ -188,6 +211,7 @@ function view_archives ( $data_content )
     $xtpl->assign( 'LANG', $lang_module );
     $xtpl->assign( 'NV_BASE_SITEURL', NV_BASE_SITEURL );
     $xtpl->assign( 'TEMPLATE', $module_info['template'] );
+    $xtpl->assign( 'module_file', $module_file );
     $data_content['xfile'] = "download";
     if ( ! empty( $data_content['filepath'] ) )
     {
@@ -275,13 +299,13 @@ function view_search ( $data_content = null, $html_pages = "", $data_form )
     $xtpl->assign( 'DATA', $data_form );
     foreach ( $global_archives_cat as $catid => $catinfo )
     {
-        $xtitle = "";
+        $xtitle = '';
         if ( $catinfo['lev'] > 0 )
         {
-            $xtitle .= "|";
+            $xtitle .= '|';
             for ( $i = 1; $i <= $catinfo['lev']; $i ++ )
             {
-                $xtitle .= "----- ";
+                $xtitle .= '----- ';
             }
         }
         $catinfo['xtitle'] = $xtitle . $catinfo['title'];

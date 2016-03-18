@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
 	<thead>
@@ -56,7 +59,7 @@
 			<tr>
 				<td align="right"><strong>{LANG.field_parent}: </strong></td>
 				<td>
-				<select class="form-control" name="parentid">
+				<select id="sel-field" class="form-control" name="parentid">
                 	<option value="0" {ROW.select}>{LANG.field_main}</option>
 					<!-- BEGIN: fieldlist -->
 					<option value="{ROW.fieldid}" {ROW.select}>{ROW.xtitle}</option>
@@ -92,6 +95,10 @@
 $("#idtitle").change(function () {
     get_alias();
 });
+$(document).ready(function() {
+	$("#sel-field").select2();
+});
+
 <!-- END: getalias -->
 show_group();
 </script>

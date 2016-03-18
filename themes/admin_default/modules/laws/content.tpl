@@ -7,6 +7,7 @@
 <link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.menu.css" rel="stylesheet" />
 <link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.autocomplete.css" rel="stylesheet" />
 <link type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.datepicker.css" rel="stylesheet" />
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
 
 <form class="form-inline m-bottom confirm-reload" action="" method="post" id="idcontent">
 	<div class="row">
@@ -35,7 +36,7 @@
 					<tr>
 						<td><strong>{LANG.cat_parent} </strong></td>
 						<td>
-						<select class="form-control w200" name="catid">
+						<select class="form-control w200" name="catid" id="sel-cat">
 							<option value="">{LANG.sel_cat}</option>
 							<!-- BEGIN: catlist -->
 							<option value="{ROW.catid}" {ROW.select}>{ROW.xtitle}</option>
@@ -56,7 +57,7 @@
 					<tr>
 						<td><strong>{LANG.inroom} </strong></td>
 						<td>
-						<select class="form-control w200" name="roomid">
+						<select class="form-control w200" name="roomid" id="sel-room">
 							<option value="0">{LANG.room_main}</option>
 							<!-- BEGIN: roomlist -->
 							<option value="{ROW.roomid}" {ROW.select}>{ROW.xtitle}</option>
@@ -69,12 +70,25 @@
 					<tr>
 						<td><strong>{LANG.of_field} </strong></td>
 						<td>
-						<select class="form-control w200" name="fieldid">
+						<select class="form-control w200" name="fieldid" id="sel-field">
 							<option value="0">{LANG.field_main}</option>
 							<!-- BEGIN: fieldlist -->
 							<option value="{ROW.fieldid}" {ROW.select}>{ROW.xtitle}</option>
 							<!-- END: fieldlist -->
 						</select>
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td><strong>{LANG.issuing} </strong></td>
+						<td>
+							<select class="form-control w350" name="organid" id="sel-organ">
+								<option value="0">{LANG.organ_main}</option>
+								<!-- BEGIN: organlist -->
+								<option value="{ROW.organid}" {ROW.select}>{ROW.xtitle}</option>
+								<!-- END: organlist -->
+							</select>
 						</td>
 					</tr>
 				</tbody>
@@ -96,19 +110,6 @@
 					<tr>
 						<td><strong>{LANG.exptime} </strong></td>
 						<td><input class="form-control" style="width:100px" name="exptime" id="exptime" type="text" value="{DATA.exptime}" maxlength="10" /></td>
-					</tr>
-				</tbody>
-				<tbody>
-					<tr>
-						<td><strong>{LANG.issuing} </strong></td>
-						<td>
-							<select class="form-control w350" name="organid">
-								<option value="0">{LANG.organ_main}</option>
-								<!-- BEGIN: organlist -->
-								<option value="{ROW.organid}" {ROW.select}>{ROW.xtitle}</option>
-								<!-- END: organlist -->
-							</select>
-						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -177,8 +178,8 @@
 				<col />		
 				<tbody>
 					<tr><td align="center">
-						<input class="btn btn-success" name="submit1" type="button" value="{LANG.save_yes}" onclick="content_submit(1)"/>
-						<input class="btn btn-primary" name="submit1" type="button" value="{LANG.save_no}" onclick="content_submit(0)" />
+						<input class="btn btn-warning" name="submit1" type="button" value="{LANG.save_no}" onclick="content_submit(0)" />
+						<input class="btn btn-primary" name="submit1" type="button" value="{LANG.save_yes}" onclick="content_submit(1)"/>
 					</td></tr>
 				</tbody>
 			</table>
@@ -196,8 +197,15 @@ $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
+$(document).ready(function() {
+	$("#sel-cat").select2();
+	$("#sel-field").select2();
+	$("#sel-organ").select2();
+	$("#sel-room").select2();
+});
 //]]>
 </script>
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.menu.min.js"></script>
 <script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/ui/jquery.ui.autocomplete.min.js"></script>

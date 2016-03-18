@@ -1,9 +1,9 @@
 <!-- BEGIN: main -->
 <div class="col-md-24 col-lg-24 col-sm-24">
-	<table class="archives_list">
+	<table class="table archives_list">
 		<thead>
-			<tr>
-				<td colspan="2">{LANG.doc_name} : <strong style="color:#036">{DATA.title}</strong></td>
+			<tr class="info">
+				<td colspan="2">{LANG.doc_name} : <strong>{DATA.title}</strong></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -83,16 +83,16 @@
 				<td align="right" colspan="2">
 					<span style="color:#666; font-size:11px">{LANG.view} : {DATA.view} | {LANG.down} : {DATA.down}</span>
 					<a href="{DATA.linkdown}">
-						<span class="archives_down" style="background:url({NV_BASE_SITEURL}themes/{TEMPLATE}/images/archives/{DATA.xfile}.png) no-repeat center left;">
+						<span class="archives_down" style="background:url({NV_BASE_SITEURL}themes/{TEMPLATE}/images/{module_file}/{DATA.xfile}.png) no-repeat center left;">
 						{LANG.down}</span>
 					</a>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<table class="archives_list">
+	<table class="table archives_list">
 		<thead>
-			<tr>
+			<tr class="info">
 				<td><strong>{LANG.bodytext}</strong></td>
 			</tr>
 		</thead>
@@ -101,11 +101,6 @@
 				<td><div class="clearfix">{DATA.bodytext}</div></td>
 			</tr>
 		</tbody>
-		<thead>
-			<tr>
-				<td></td>
-			</tr>
-		</thead>
 	</table>
 </div>
 <!-- END: main -->

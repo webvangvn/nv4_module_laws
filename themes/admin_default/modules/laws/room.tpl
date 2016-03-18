@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
 	<thead>
@@ -55,7 +58,7 @@
 			<tr>
 				<td align="right"><strong>{LANG.room_parent}: </strong></td>
 				<td>
-				<select class="form-control" name="parentid">
+				<select id="sel-room" class="form-control" name="parentid">
                 	<option value="0" {ROW.select}>{LANG.room_main}</option>
 					<!-- BEGIN: roomlist -->
 					<option value="{ROW.roomid}" {ROW.select}>{ROW.xtitle}</option>
@@ -92,7 +95,9 @@ $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
-show_group();
+$(document).ready(function() {
+	$("#sel-room").select2();
+});
 </script>
 <!-- END: form -->
 <!-- END: main -->

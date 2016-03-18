@@ -28,12 +28,12 @@ $result = $db->query( $sql );
 $data_content = $result->fetch();
 if ( empty( $data_content ) ) die( 'Stop!!' );
 
-$sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET down=down+1 WHERE id = '. $id;
-
-$result = $db->query( $sql );
 
 if ( ! empty( $data_content['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $data_content['filepath'] ) )
 {
+	$_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET down=down+1 WHERE id = '. $id;
+	$result = $db->query( $_sql );
+
     $file_basename = $data_content['filepath'];
 	$data_content['filepath'] = NV_UPLOADS_REAL_DIR . "/" . $module_name . "/" . $data_content['filepath'];
     $directory = NV_UPLOADS_REAL_DIR;
@@ -43,7 +43,15 @@ if ( ! empty( $data_content['filepath'] ) and file_exists( NV_UPLOADS_REAL_DIR .
 }
 elseif (!empty($data_content['otherpath'])) 
 {
-	 Header( "Location: ".$data_content['otherpath'] );
-     die();
+	$_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_rows SET down=down+1 WHERE id = '. $id;
+	$result = $db->query( $_sql );
+	
+	Header( "Location: ".$data_content['otherpath'] );
+	die();
 }
-else { die('no file!!'); }
+else {
+	$base_url_rewrite = nv_url_rewrite( NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$data_content['catid']]['alias'] . '/' . $data_content['alias'] . '-' . $data_content['id'] . $global_config['rewrite_exturl'], true );
+    $redirect = '<meta http-equiv="Refresh" content="5;URL=' . $base_url_rewrite . '" />';
+    nv_info_die($lang_module['doc_no_file_title'], $lang_module['doc_no_file_title'], $lang_module['doc_no_file'] . $redirect, 404);
+	die();
+}

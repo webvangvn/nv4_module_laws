@@ -35,12 +35,12 @@
 				<td class="text-center" >
 				   <input name="check_all[]"  type="checkbox" value="yes" onclick="nv_checkAll(this.form, 'idcheck[]', 'check_all[]',this.checked);" />
 				</td>
-				<td class="text-center" ><a href="{base_url_id}">ID</a></td>
-				<td class="text-center" ><a href="{base_url_name}">{LANG.doc_name}</a></td>
-				<td class="text-center" >{LANG.search_cat}</td>
-				<td class="text-center" >{LANG.doc_of_room}</td>
-				<td aclass="text-center" >{LANG.status}</td>
-				<td class="text-center" ></td>
+				<td class="text-center"><strong>STT</strong></td>
+				<td class="text-center"><a href="{base_url_name}"><strong>{LANG.doc_name}</strong></a></td>
+				<td class="text-center"><strong>{LANG.search_cat}</strong></td>
+				<td class="text-center"><strong>{LANG.doc_of_room}</strong></td>
+				<td class="text-center"><strong>{LANG.status}</strong></td>
+				<td class="text-center"></td>
 			</tr>
 		</thead>
 		<!-- BEGIN: loop -->
@@ -50,7 +50,7 @@
 				  <input type="checkbox" value="{ROW.id}" class="idlist" name="idcheck[]" onclick="nv_UncheckAll(this.form, 'idcheck[]', 'check_all[]', this.checked);" />
 				</td>
 				<td class="text-center">
-				  {ROW.id}
+				  {ROW.stt}
 				</td>
 				<td>
 					<a href="{ROW.link}" target="_blank"><b>{ROW.title}</b></a>

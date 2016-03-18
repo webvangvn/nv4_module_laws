@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
 	<thead>
@@ -55,7 +58,7 @@
 			<tr>
 				<td align="right"><strong>{LANG.organ_parent}: </strong></td>
 				<td>
-				<select class="form-control" name="parentid">
+				<select id="sel-organ" class="form-control" name="parentid">
                 	<option value="0" {ROW.select}>{LANG.organ_main}</option>
 					<!-- BEGIN: organlist -->
 					<option value="{ROW.organid}" {ROW.select}>{ROW.xtitle}</option>
@@ -92,7 +95,9 @@ $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
-show_group();
+$(document).ready(function() {
+	$("#sel-organ").select2();
+});
 </script>
 <!-- END: form -->
 <!-- END: main -->

@@ -118,6 +118,7 @@ $result_all = $db->query( 'SELECT * FROM ' . $table . ' ' . $where_sql . ' ' . $
 
 $all_page = ( $numf ) ? $numf : 1;
 $i=1;
+if ($page > 1) $i = 1 + (( $page - 1 ) * $per_page);
 while ( $row = $result_all->fetch() )
 {
 	$row['bg'] = ($i%2==0)? 'class=\'second\'':'';
@@ -129,6 +130,7 @@ while ( $row = $result_all->fetch() )
 	$row['edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content&id='.$row['id'];
 	$row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_cat[$row['catid']]['alias'] . '/' . $row['alias'] . '-' . $row['id'] . $global_config['rewrite_exturl'];
 	$row['status'] = $arr_status[$row['status']];
+	$row['stt'] = $i;
 	$xtpl->assign( 'ROW', $row );
     $xtpl->parse( 'main.loop' );
     $i++;

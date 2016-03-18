@@ -40,6 +40,7 @@ $lang_module['groups_view'] = 'Nhóm người dùng';
 $lang_module['ok'] = 'Đồng ý';
 $lang_module['no'] = 'Hủy bỏ';
 $lang_module['del_ok'] = 'Đồng ý xóa';
+$lang_module['move_and_del'] = 'Chuyển bài viết và xóa';
 $lang_module['status'] = 'Trạng thái';
 $lang_module['status1'] = 'Xuất bản';
 $lang_module['status0'] = 'Chờ duyệt';
@@ -113,6 +114,7 @@ $lang_module['content_title_erorr'] = 'Lỗi: Không có tiêu đề/số/ký hi
 $lang_module['content_back'] = 'Quay lại trang sửa bài viết';
 $lang_module['errorsave'] = 'Lỗi hệ thống không cập nhật được nội dung, bạn hãy kiểm tra lại liên kết tĩnh tiêu đề bài viết có thể bị trùng';
 $lang_module['error_cat'] = 'Lỗi: Chưa chọn chuyên mục';
+$lang_module['error_file'] = 'Lỗi: Chưa chọn file Văn bản';
 $lang_module['sel_cat'] = 'Chọn chuyên mục';
 
 //field
@@ -149,7 +151,7 @@ $lang_module['organ_del_title2'] = 'Cơ quan ban hành: <b>%s</b> có chứa (%s
 $lang_module['config_view_title'] = 'Hiển thị ngoài trang chủ';
 $lang_module['config_view_num'] = 'Số văn bản hiển thị trên 1 trang';
 $lang_module['view_listall'] = 'Hiển thị tất cả';
-$lang_module['view_listcate'] = 'Hiển thị theo loại';
+$lang_module['view_listcate'] = 'Hiển thị theo loại văn bản';
 $lang_module['view_none'] = 'Không hiển thị';
 $lang_module['config_who_upload'] = 'Ai có quyền upload file';
 $lang_module['config_status'] = 'Tự động duyệt Văn bản';
