@@ -106,3 +106,7 @@ table.archives_list thead {
 	border:1px solid #FFF
 }
 .frame { text-align:center }
+.page-header{
+	padding-bottom: 8px;
+	margin: 10px 0 18px;
+}

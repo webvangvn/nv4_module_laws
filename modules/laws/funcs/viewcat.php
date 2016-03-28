@@ -10,74 +10,49 @@
  */
 
 if ( ! defined( 'NV_IS_MOD_ARCHIVES' ) ) die( 'Stop!!!' );
-
-$page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-$catid = 0;
-if ( ! empty( $array_op[1] ) )
-{
-    $temp = explode( '-', $array_op[1] );
-    if ( ! empty( $temp ) )
-    {
-        $catid = intval( end( $temp ) );
-    }
+
+$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$catid]['alias'];
+$base_url_rewrite = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_archives_cat[$catid]['alias'];
+
+if ($page > 1) {
+    $base_url_rewrite .= '/page-' . $page;
 }
-if ( empty( $global_archives_cat[$catid] ) ) die( 'Stop!!!' );
-$page = 1;
-if ( ! empty( $array_op[2] ) )
-{
-    $temp = explode( '-', $array_op[2] );
-    if ( ! empty( $temp ) )
-    {
-        $page = intval( end( $temp ) );
-    }
+
+$base_url_rewrite = nv_url_rewrite($base_url_rewrite, true);
+if ($_SERVER['REQUEST_URI'] != $base_url_rewrite and NV_MAIN_DOMAIN . $_SERVER['REQUEST_URI'] != $base_url_rewrite) {
+    Header('Location: ' . $base_url_rewrite);
+    die();
 }
-$base_url = "" . NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "/".$global_archives_cat[$catid]['alias']."-".$catid;;
-$order_by = 'id DESC';
+
+$order_by = 'addtime DESC';
 $db->sqlreset()
 	->select( 'COUNT(*)' )
 	->from( NV_PREFIXLANG . '_' . $module_data . '_rows' )
-	->where( 'catid='.$catid.' AND status= 1' );
+	->where( 'catid = ' . $catid . ' AND status= 1' );
 
 $num_items = $db->query( $db->sql() )->fetchColumn();
-
 $db->select( '*' )
 		->order( $order_by )
-		->limit( $per_page )
-		->offset( ( $page - 1 ) * $per_page );
+		->limit($per_page)
+		->offset(($page - 1) * $per_page);
 
 $result = $db->query( $db->sql() );
 
-$all_page = ( $num_items ) ? $num_items : 1;
-
-
 $data_content = array();
-$i = $page + 1;
+$i = 1;
+if ($page > 1) $i = 1 + (( $page - 1 ) * $per_page);
 while ( $row = $result->fetch() )
 {
     $row['no'] = $i;
     $data_content[] = $row;
-    $i ++;
+	++$i;
 }
-$top_contents = "";
-if ( $global_archives_cat[$catid]['parentid'] > 0 )
-{
-    $parentid_i = $global_archives_cat[$catid]['parentid'];
-    $array_cat_title = array();
-    while ( $parentid_i > 0 )
-    {
-        $array_cat_title[] = $cur_link = "<a href=\"".$global_archives_cat[$parentid_i]['link']."\">" . $global_archives_cat[$parentid_i]['title'] . "</a>";
-        $parentid_i = $global_archives_cat[$parentid_i]['parentid'];
-    }
-    sort( $array_cat_title, SORT_NUMERIC );
-    $top_contents = implode( " -> ", $array_cat_title );
-}
-$lik = ( empty($top_contents) )? "": " - ";
-$cur_link = "<a href=\"".$global_archives_cat[$catid]['link']."\">" . $global_archives_cat[$catid]['title'] . "</a>";
-$top_contents = "<div class=\"archives_links\">".$top_contents.$lik.$cur_link."</div>";
 
-$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
-$contents = call_user_func( $global_archives_cat[$catid]['viewcat'], $data_content, $top_contents ,$html_pages );
+$page_title = isset($global_archives_cat[$catid]['title']) ? $global_archives_cat[$catid]['title'] : $module_info['custom_title'];
+
+$html_pages = nv_alias_page($page_title, $base_url, $num_items, $per_page, $page);
+$contents = call_user_func( $global_archives_cat[$catid]['viewcat'], $data_content, $html_pages );
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme( $contents );

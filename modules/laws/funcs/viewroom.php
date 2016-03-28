@@ -56,25 +56,9 @@ while ( $row = $result->fetch() )
     $data_content[] = $row;
     $i ++;
 }
-$top_contents = "";
-if ( $global_archives_room[$roomid]['parentid'] > 0 )
-{
-    $parentid_i = $global_archives_room[$roomid]['parentid'];
-    $array_room_title = array();
-    while ( $parentid_i > 0 )
-    {
-        $array_room_title[] = $cur_link = "<a href=\"".$global_archives_room[$parentid_i]['link']."\">" . $global_archives_room[$parentid_i]['title'] . "</a>";
-        $parentid_i = $global_archives_room[$parentid_i]['parentid'];
-    }
-    sort( $array_room_title, SORT_NUMERIC );
-    $top_contents = implode( " -> ", $array_room_title );
-}
-$lik = ( empty($top_contents) )? "": " - ";
-$cur_link = "<a href=\"".$global_archives_room[$roomid]['link']."\">" . $global_archives_room[$roomid]['title'] . "</a>";
-$top_contents = "<div class=\"archives_links\">".$top_contents.$lik.$cur_link."</div>";
 
-$html_pages = nv_archives_page( $base_url, $all_page, $per_page, $page );
-$contents = viewcat_list( $data_content, $top_contents ,$html_pages );
+$html_pages = nv_generate_page( $base_url, $all_page, $per_page, $page );
+$contents = viewcat_list( $data_content, $html_pages );
 
 include ( NV_ROOTDIR . "/includes/header.php" );
 echo nv_site_theme( $contents );

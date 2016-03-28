@@ -12,17 +12,36 @@
 if ( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 
 $page_title = $lang_module['cat'];
-
 $groups_list = nv_groups_list();
+
 $contents = "";
 $error = "";
 $parentid = $nv_Request->get_int( 'parentid', 'get', 0 );
 $catid = $nv_Request->get_int( 'catid', 'get,post', 0 );
 $data = array(
-	"catid"=>0, "parentid"=>0, "title"=>"", "alias"=>"", "description"=>"", "image"=>"", 
-	"thumbnail"=>"", "weight"=>0, "order"=>0, "lev"=>0, "viewcat"=>"viewcat_list", "numsubcat"=>0,
-    "subcatid"=>"", "inhome"=>1, "numlinks"=>3, "keywords"=>"", "admins"=>0, "add_time"=>NV_CURRENTTIME, 
-    "edit_time"=>NV_CURRENTTIME, "del_cache_time"=>0, "who_view"=>0, "groups_view"=>"","numrow"=>0
+	'catid'=>0,
+	'parentid'=>0,
+	'title'=>'',
+	'alias'=>'',
+	'description'=>'',
+	'image'=>'', 
+	'thumbnail'=>'',
+	'weight'=>0,
+	'order'=>0,
+	'lev'=>0,
+	'viewcat'=>'viewcat_list',
+	'numsubcat'=>0,
+	'subcatid'=>'',
+	'inhome'=>1,
+	'numlinks'=>3,
+	'keywords'=>'',
+	'admins'=>0,
+	'add_time'=>NV_CURRENTTIME, 
+	'edit_time'=>NV_CURRENTTIME,
+	'del_cache_time'=>0,
+	'who_view'=>0,
+	'groups_view'=>6,
+	'numrow'=>0
 );
 
 //post data
@@ -74,7 +93,7 @@ if ( $savecat == '1' )
 	        if ( $newcatid > 0 )
 	        {
 	        	nv_fix_cat_order();
-				nv_del_moduleCache( $module_name );
+				$nv_Cache->delMod( $module_name );
 				nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['add_cat'], $data['title'], $admin_info['userid'] );
 	            Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
 	            die();
@@ -99,7 +118,6 @@ if ( $savecat == '1' )
 			$stmt->execute();
         	if ($stmt->rowCount())
 	        {
-				
 	        	if ( $data['parentid'] != $parentid_old )
 	        	{
 					$result= $db->query( "SELECT max(weight) FROM " . NV_PREFIXLANG . "_" . $module_data . "_cat WHERE parentid='" . $data['parentid'] . "'" );
@@ -110,7 +128,7 @@ if ( $savecat == '1' )
 	                nv_fix_cat_order();
 					nv_insert_logs( NV_LANG_DATA, $module_name, $lang_module['edit_cat'], $data['title'], $admin_info['userid'] );
 	        	}
-				nv_del_moduleCache( $module_name );
+				$nv_Cache->delMod( $module_name );
 				
 	        	Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&parentid=" . $data['parentid'] . "" );
 	            die();
@@ -227,9 +245,6 @@ if ( empty( $data['alias'] ) )
 {
     $xtpl->parse( 'main.form.getalias' );
 }
-//$array_who_view
-//$xtpl->assign( 'who_views', drawselect_status( "who_view", $array_who_view, $data['who_view'],'show_group()' ) );
-//$groups_list
 
 if (!empty($groups_list))
 {
@@ -246,10 +261,10 @@ if (!empty($groups_list))
 	    $xtpl->parse( 'main.form.groups_views' );
 	}
 }
+
 $xtpl->assign( 'hidediv', $data['who_view'] == 3 ? "visibility:visible" : "visibility:hidden" );
 $xtpl->assign( 'DATA', $data );
 $xtpl->parse( 'main.form' );
-
 
 $xtpl->parse( 'main' );
 $contents = $xtpl->text( 'main' );

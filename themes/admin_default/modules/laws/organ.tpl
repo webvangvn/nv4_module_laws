@@ -1,12 +1,15 @@
 <!-- BEGIN: main -->
+<link rel="stylesheet" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css">
+<script type="text/javascript" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.js"></script>
+
 <!-- BEGIN: list -->
 <table class="table table-striped table-bordered table-hover">
 	<thead>
         <tr>
-            <td align="center" width="50">{LANG.weight}</td>
-            <td>{LANG.organ_name}</td>
-            <td>{LANG.alias}</td>
-            <td width="200"></td>
+            <td class="w100">{LANG.weight}</td>
+            <td class="w250">{LANG.organ_name}</td>
+            <td class="w250">{LANG.alias}</td>
+            <td class="w250"></td>
         </tr>
     </thead>
     <!-- BEGIN: loop -->
@@ -33,22 +36,21 @@
     </div>
     <div class="clear"></div>
 	<!-- END: error -->
-    <form action="" method="post">
+    <form class="form-inline m-bottom" action="" method="post">
     <input name="save" type="hidden" value="1" />
     <input name="parentid_old" type="hidden" value="{DATA.parentid}" />
     <table summary="" class="table table-striped table-bordered table-hover">
 		<tbody>
 			<tr>
 				<td align="right"><strong>{LANG.organ_name}: </strong></td>
-				<td><input style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
+				<td><input class="form-control" style="width: 600px" name="title" type="text" value="{DATA.title}" maxlength="255" id="idtitle"/></td>
 			</tr>
 		</tbody>
 		<tbody class="second">
 			<tr>
 				<td align="right"><strong>{LANG.alias}: </strong></td>
 				<td>
-					<input style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>
-					<input type="button" value="GET" onclick="get_alias();" style="font-size:11px"/>
+					<input class="form-control" style="width: 550px" name="alias" type="text" value="{DATA.alias}" maxlength="255" id="idalias"/>&nbsp;<em class="fa fa-refresh fa-lg fa-pointer" onclick="get_alias();">&nbsp;</em>
 				</td>
 			</tr>
 		</tbody>
@@ -56,7 +58,7 @@
 			<tr>
 				<td align="right"><strong>{LANG.organ_parent}: </strong></td>
 				<td>
-				<select name="parentid">
+				<select id="sel-organ" class="form-control" name="parentid">
                 	<option value="0" {ROW.select}>{LANG.organ_main}</option>
 					<!-- BEGIN: organlist -->
 					<option value="{ROW.organid}" {ROW.select}>{ROW.xtitle}</option>
@@ -68,20 +70,20 @@
 		<tbody class="second">
 			<tr>
 				<td align="right"><strong>{LANG.keywords}: </strong></td>
-				<td><input style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
+				<td><input class="form-control" style="width: 600px" name="keywords" type="text" value="{DATA.keywords}" maxlength="255" /></td>
 			</tr>
 		</tbody>
 		<tbody>
 			<tr>
 				<td valign="top" align="right"><strong>{LANG.description} </strong></td>
 				<td>
-				<textarea style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
+				<textarea class="form-control" style="width: 600px" name="description" cols="100" rows="5">{DATA.description}</textarea>
 				</td>
 			</tr>
 		</tbody>
         <tbody>
         	<tr><td colspan="2" align="center">
-            	<input name="submit1" type="submit" value="{LANG.save}" /></center>
+            	<input class="btn btn-primary" name="submit1" type="submit" value="{LANG.save}" /></center>
             </td></tr>
         </tbody>
     </table>
@@ -93,7 +95,9 @@ $("#idtitle").change(function () {
     get_alias();
 });
 <!-- END: getalias -->
-show_group();
+$(document).ready(function() {
+	$("#sel-organ").select2();
+});
 </script>
 <!-- END: form -->
 <!-- END: main -->

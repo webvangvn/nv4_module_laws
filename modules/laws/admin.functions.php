@@ -11,8 +11,8 @@
 
 if ( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) or ! defined( 'NV_IS_MODADMIN' ) ) die( 'Stop!!!' );
 define( 'NV_IS_FILE_ADMIN', true );
-nv_del_moduleCache( 'settings' );
-nv_del_moduleCache( $module_name );
+$nv_Cache->delMod( 'settings' );
+$nv_Cache->delMod( $module_name );
 
 global $global_array_cat;
 $global_array_cat = array();
@@ -260,7 +260,7 @@ function nv_fix_organ_order ( $parentid = 0, $order = 0, $lev = 0 )
 ///////////////////////
 function drawselect_number ( $select_name = "", $number_start = 0, $number_end = 1, $number_curent = 0, $func_onchange = "", $enable = "" )
 {
-    $html = '<select name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
+    $html = '<select class="form-control" name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
     for ( $i = $number_start; $i <= $number_end; $i ++ )
     {
         $select = ( $i == $number_curent ) ? 'selected="selected"' : '';
@@ -272,7 +272,7 @@ function drawselect_number ( $select_name = "", $number_start = 0, $number_end =
 
 function drawselect_status ( $select_name = "", $array_control_value, $value_curent = 0, $func_onchange = "", $enable = "" )
 {
-    $html = '<select name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
+    $html = '<select class="form-control w200" name="' . $select_name . '" id="id_' . $select_name . '" onchange="' . $func_onchange . '" ' . $enable . '>';
     foreach ( $array_control_value as $val => $title )
     {
         $select = ( $val == $value_curent ) ? "selected=\"selected\"" : "";
@@ -310,4 +310,43 @@ function GetCatidInParent ( $catid )
         }
     }
     return array_unique( $array_cat );
+}
+/**
+ * redirect()
+ *
+ * @param string $msg1
+ * @param string $msg2
+ * @param mixed $nv_redirect
+ * @return
+ */
+function redirect($msg1 = '', $msg2 = '', $nv_redirect, $autoSaveKey = '', $go_back = '')
+{
+    global $global_config, $module_file, $module_name;
+    $xtpl = new XTemplate('redirect.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+
+    if (empty($nv_redirect)) {
+        $nv_redirect = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
+    }
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+    $xtpl->assign('NV_REDIRECT', $nv_redirect);
+    $xtpl->assign('MSG1', $msg1);
+    $xtpl->assign('MSG2', $msg2);
+
+    if (! empty($autoSaveKey)) {
+        $xtpl->assign('AUTOSAVEKEY', $autoSaveKey);
+        $xtpl->parse('main.removelocalstorage');
+    }
+
+    if ($go_back) {
+        $xtpl->parse('main.go_back');
+    } else {
+        $xtpl->parse('main.meta_refresh');
+    }
+
+    $xtpl->parse('main');
+    $contents = $xtpl->text('main');
+
+    include NV_ROOTDIR . '/includes/header.php';
+    echo nv_admin_theme($contents);
+    include NV_ROOTDIR . '/includes/footer.php';
 }
